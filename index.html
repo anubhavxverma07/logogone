@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="description" content="LogoGone — Remove any logo from photos and videos. Free, private, 4K-ready. Runs 100% in your browser." />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="description" content="LogoGone — AI-powered logo removal. Free, private, 4K. Runs 100% in your browser." />
 <meta name="theme-color" content="#06070d" />
-<title>LogoGone — Remove any logo. Free. Private. 4K.</title>
+<title>LogoGone — AI Logo Remover</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root {
   --bg: #06070d;
+  --bg-2: #0b0d18;
   --card: rgba(255,255,255,0.04);
   --card-hover: rgba(255,255,255,0.07);
   --border: rgba(255,255,255,0.08);
@@ -29,7 +30,6 @@
   --danger: #ff5577;
   --warning: #ffb547;
   --radius: 18px;
-  --radius-sm: 12px;
   --shadow: 0 20px 60px rgba(0,0,0,0.5);
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
@@ -54,8 +54,8 @@ body::before {
   animation: mesh 22s ease-in-out infinite alternate;
 }
 @keyframes mesh {
-  0%   { transform: translate(0,0) scale(1); }
-  50%  { transform: translate(-3%, -2%) scale(1.05); }
+  0% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(-3%, -2%) scale(1.05); }
   100% { transform: translate(2%, 3%) scale(1); }
 }
 .container { max-width: 1180px; margin: 0 auto; padding: 0 22px; }
@@ -64,7 +64,6 @@ body::before {
 nav {
   position: sticky; top: 0; z-index: 100;
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   background: rgba(6,7,13,0.65);
   border-bottom: 1px solid var(--border);
 }
@@ -72,11 +71,7 @@ nav {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 22px; max-width: 1180px; margin: 0 auto;
 }
-.logo {
-  display: flex; align-items: center; gap: 10px;
-  font-weight: 800; font-size: 19px; letter-spacing: -0.02em;
-  cursor: pointer;
-}
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 19px; letter-spacing: -0.02em; cursor: pointer; }
 .logo-icon {
   width: 34px; height: 34px; border-radius: 10px;
   background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
@@ -90,19 +85,21 @@ nav {
   animation: shine 3.5s infinite;
 }
 @keyframes shine {
-  0%   { transform: translateX(-100%) translateY(-100%); }
+  0% { transform: translateX(-100%) translateY(-100%); }
   100% { transform: translateX(100%) translateY(100%); }
 }
 .logo-icon svg { width: 18px; height: 18px; position: relative; z-index: 1; }
-.logo-text span {
-  background: linear-gradient(135deg, #fff, #a8b3d0);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
+.logo-text span { background: linear-gradient(135deg, #fff, #a8b3d0); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .nav-tag {
   font-size: 11px; padding: 3px 8px; border-radius: 999px;
   background: linear-gradient(135deg, rgba(34,211,160,0.15), rgba(34,211,160,0.05));
   border: 1px solid rgba(34,211,160,0.3);
   color: var(--success); font-weight: 700;
+}
+.nav-tag.ai {
+  background: linear-gradient(135deg, rgba(124,92,255,0.15), rgba(124,92,255,0.05));
+  border-color: rgba(124,92,255,0.3);
+  color: #b8a4ff;
 }
 
 /* HERO */
@@ -119,36 +116,21 @@ nav {
   background: var(--success); box-shadow: 0 0 12px var(--success);
   animation: pulse 2s infinite;
 }
-@keyframes pulse {
-  0%,100% { opacity:1; transform:scale(1); }
-  50%     { opacity:0.6; transform:scale(1.4); }
-}
-h1 {
-  font-size: clamp(34px, 6vw, 62px);
-  font-weight: 900; letter-spacing: -0.04em;
-  line-height: 1.05; margin-bottom: 16px;
-}
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.6; transform:scale(1.4); } }
+h1 { font-size: clamp(34px, 6vw, 62px); font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 16px; }
 .grad-text {
   background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 50%, var(--brand-3) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
   background-size: 200% 200%; animation: gradShift 4s ease infinite;
 }
-@keyframes gradShift {
-  0%,100% { background-position: 0% 50%; }
-  50%     { background-position: 100% 50%; }
-}
-.subtitle {
-  color: var(--text-dim);
-  font-size: clamp(14px, 1.5vw, 17px);
-  max-width: 620px; margin: 0 auto 32px;
-}
+@keyframes gradShift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.subtitle { color: var(--text-dim); font-size: clamp(14px, 1.5vw, 17px); max-width: 620px; margin: 0 auto 32px; }
 
 /* TABS */
 .tabs {
   display: inline-flex; gap: 4px; padding: 5px;
   background: var(--card); border: 1px solid var(--border);
-  border-radius: 14px; margin-bottom: 28px;
-  backdrop-filter: blur(10px);
+  border-radius: 14px; margin-bottom: 28px; backdrop-filter: blur(10px);
 }
 .tab {
   padding: 10px 22px; border-radius: 10px; border: none;
@@ -168,14 +150,12 @@ h1 {
   border: 2px dashed var(--border);
   border-radius: 24px; padding: 60px 30px;
   background: var(--card); backdrop-filter: blur(20px);
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  cursor: pointer; transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
   position: relative;
 }
 .drop-zone:hover, .drop-zone.drag {
   border-color: var(--brand-1); background: var(--card-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 60px rgba(124,92,255,0.2);
+  transform: translateY(-2px); box-shadow: 0 20px 60px rgba(124,92,255,0.2);
 }
 .drop-icon {
   width: 70px; height: 70px; margin: 0 auto 20px;
@@ -208,165 +188,365 @@ h1 {
 .btn-primary:hover::before { transform: translateX(100%); }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(124,92,255,0.5); }
 .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-.btn-ghost {
-  background: var(--card); color: var(--text); border: 1px solid var(--border);
-}
+.btn-ghost { background: var(--card); color: var(--text); border: 1px solid var(--border); }
 .btn-ghost:hover { background: var(--card-hover); border-color: var(--border-hover); }
-.btn-sm { padding: 8px 14px; font-size: 13px; }
+.btn-sm { padding: 9px 14px; font-size: 13px; }
 
-/* EDITOR */
-.editor { max-width: 1100px; margin: 0 auto; }
-.editor-top {
-  display: flex; flex-wrap: wrap; gap: 12px;
-  align-items: center; justify-content: space-between;
-  padding: 14px 18px; background: var(--card);
-  border: 1px solid var(--border); border-radius: 16px;
-  margin-bottom: 16px; backdrop-filter: blur(10px);
+/* ============ EDITOR LAYOUT ============ */
+.editor {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: var(--bg);
+  display: none;
+  flex-direction: column;
 }
-.editor-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.tool-group {
-  display: flex; align-items: center; gap: 8px;
-  padding: 6px 12px; background: rgba(0,0,0,0.3);
-  border-radius: 10px; border: 1px solid var(--border);
-}
-.tool-group label { font-size: 12px; color: var(--text-dim); font-weight: 600; }
-.brush-val { font-size: 12px; color: var(--text-mute); min-width: 24px; }
+.editor.active { display: flex; }
 
-input[type=range] {
-  -webkit-appearance: none; appearance: none;
-  width: 100px; height: 4px;
-  background: var(--border); border-radius: 2px; outline: none;
+/* Editor header - minimal */
+.editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  padding-top: max(12px, env(safe-area-inset-top));
+  background: rgba(6,7,13,0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  z-index: 10;
 }
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
-  cursor: pointer; box-shadow: 0 2px 8px rgba(124,92,255,0.5);
+.editor-title {
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
+.editor-title-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--success); box-shadow: 0 0 10px var(--success);
+}
+.editor-close {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text); cursor: pointer;
+  display: grid; place-items: center;
+  transition: all 0.2s;
+}
+.editor-close:hover { background: rgba(255,85,119,0.15); border-color: rgba(255,85,119,0.3); color: var(--danger); }
 
-.canvas-wrap {
+/* Canvas area - flexes to fill */
+.canvas-area {
+  flex: 1;
   position: relative;
-  border-radius: 18px; overflow: hidden;
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  min-height: 300px;
-  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 12px;
   background-image:
-    linear-gradient(45deg, #1a1c24 25%, transparent 25%),
-    linear-gradient(-45deg, #1a1c24 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #1a1c24 75%),
-    linear-gradient(-45deg, transparent 75%, #1a1c24 75%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-  background-color: #0b0d18;
+    linear-gradient(45deg, #0e1018 25%, transparent 25%),
+    linear-gradient(-45deg, #0e1018 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #0e1018 75%),
+    linear-gradient(-45deg, transparent 75%, #0e1018 75%);
+  background-size: 24px 24px;
+  background-position: 0 0, 0 12px, 12px -12px, -12px 0px;
+  background-color: #0a0c14;
+  touch-action: none;
 }
 #canvas {
   display: block;
   max-width: 100%;
-  max-height: 70vh;
+  max-height: 100%;
   width: auto;
   height: auto;
-  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
   cursor: crosshair;
   touch-action: none;
 }
 
+/* Magnifier */
 .magnifier {
   position: absolute;
-  width: 130px;
-  height: 130px;
+  width: 130px; height: 130px;
   border-radius: 50%;
   border: 3px solid var(--brand-1);
   background: #000;
   overflow: hidden;
   pointer-events: none;
   display: none;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8), 0 0 0 4px rgba(124,92,255,0.15);
   z-index: 20;
 }
-#magnifierCanvas {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+#magnifierCanvas { width: 100%; height: 100%; display: block; }
 
-.canvas-overlay {
-  position: absolute; inset: 0; pointer-events: none;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
-  opacity: 0; transition: opacity 0.3s;
+/* Processing overlay */
+.processing-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6,7,13,0.92);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 50;
+  padding: 20px;
+  text-align: center;
 }
-.canvas-overlay.show { opacity: 1; }
-.overlay-text {
-  color: #fff; margin-top: 16px; font-size: 14px; font-weight: 600;
-}
-
-.spinner {
-  width: 48px; height: 48px; border-radius: 50%;
+.processing-overlay.show { opacity: 1; pointer-events: auto; }
+.processing-overlay .spinner {
+  width: 52px; height: 52px; border-radius: 50%;
   border: 3px solid rgba(255,255,255,0.15);
   border-top-color: var(--brand-2);
   animation: spin 0.8s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-
-.editor-actions {
-  display: flex; flex-wrap: wrap; gap: 10px;
-  justify-content: center; margin-top: 18px;
+.processing-title {
+  color: var(--text); font-size: 15px; font-weight: 700;
+  margin-top: 18px; margin-bottom: 6px;
+}
+.processing-sub {
+  color: var(--text-dim); font-size: 13px;
+  max-width: 320px; line-height: 1.5;
 }
 
-/* PROGRESS */
-.progress-card {
-  max-width: 600px; margin: 20px auto 0;
-  padding: 20px; background: var(--card);
-  border: 1px solid var(--border); border-radius: 16px;
-  backdrop-filter: blur(10px);
+/* ============ BOTTOM TOOLBAR ============ */
+.toolbar {
+  flex-shrink: 0;
+  background: rgba(11,13,24,0.95);
+  backdrop-filter: blur(24px);
+  border-top: 1px solid var(--border);
+  padding: 12px 14px;
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 10;
 }
-.progress-head {
-  display: flex; justify-content: space-between;
-  margin-bottom: 10px; font-size: 14px; font-weight: 600;
+
+/* Row 1: Tools */
+.toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-.progress-head .pct { color: var(--accent); }
-.progress-bar {
-  height: 8px; background: rgba(0,0,0,0.4);
-  border-radius: 4px; overflow: hidden;
+
+.tool-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
 }
-.progress-fill {
+.tool-chip:hover { background: var(--card-hover); color: var(--text); border-color: var(--border-hover); }
+.tool-chip.active {
+  background: linear-gradient(135deg, rgba(124,92,255,0.25), rgba(77,171,255,0.25));
+  border-color: rgba(124,92,255,0.5);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(124,92,255,0.25);
+}
+.tool-chip svg { flex-shrink: 0; }
+
+/* Brush size control */
+.brush-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.brush-control .brush-icon {
+  width: 18px; height: 18px;
+  display: grid; place-items: center;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.brush-control input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100px;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  outline: none;
+}
+.brush-control input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(124,92,255,0.6);
+  border: 2px solid #fff;
+}
+.brush-control input[type=range]::-moz-range-thumb {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(124,92,255,0.6);
+  border: 2px solid #fff;
+}
+.brush-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 24px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Main action button */
+.btn-process {
+  flex: 1;
+  max-width: 320px;
+  padding: 14px 24px;
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(124,92,255,0.4);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.btn-process::before {
+  content:'';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+.btn-process:hover::before { transform: translateX(100%); }
+.btn-process:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(124,92,255,0.55); }
+.btn-process:active:not(:disabled) { transform: translateY(0); }
+.btn-process:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Quality picker (compact for video) */
+.quality-row {
+  display: none;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 2px 0;
+  justify-content: center;
+  scrollbar-width: none;
+}
+.quality-row.show { display: flex; }
+.quality-row::-webkit-scrollbar { display: none; }
+.q-chip {
+  padding: 7px 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.q-chip.active {
+  background: linear-gradient(135deg, rgba(124,92,255,0.25), rgba(77,171,255,0.25));
+  border-color: var(--brand-1);
+  color: var(--text);
+}
+
+/* ============ PROGRESS OVERLAY ============ */
+.progress-full {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(6,7,13,0.96);
+  backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+  text-align: center;
+}
+.progress-full.show { opacity: 1; pointer-events: auto; }
+.progress-full .spinner { width: 60px; height: 60px; border-width: 4px; margin-bottom: 24px; }
+.progress-full h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+.progress-full p { color: var(--text-dim); font-size: 14px; max-width: 400px; margin-bottom: 24px; }
+.progress-bar-wrap {
+  width: 100%; max-width: 400px;
+  height: 8px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.progress-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--brand-1), var(--brand-2), var(--accent));
-  border-radius: 4px; transition: width 0.3s; width: 0%;
+  border-radius: 4px;
+  width: 0%;
+  transition: width 0.3s;
   background-size: 200% 100%;
   animation: progAnim 2s linear infinite;
 }
-@keyframes progAnim {
-  0%   { background-position: 0% 0%; }
-  100% { background-position: 200% 0%; }
-}
-.progress-sub {
-  color: var(--text-mute); font-size: 12px;
-  margin-top: 10px; text-align: center;
+@keyframes progAnim { 0% { background-position: 0% 0%; } 100% { background-position: 200% 0%; } }
+.progress-pct {
+  font-size: 13px; font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
 }
 
-/* QUALITY */
-.quality-picker {
-  display: flex; gap: 8px; justify-content: center;
-  flex-wrap: wrap; margin: 16px 0;
+/* ============ DOWNLOAD BAR ============ */
+.download-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  padding: 16px;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+  background: rgba(6,7,13,0.96);
+  backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(34,211,160,0.3);
+  display: none;
+  justify-content: center;
+  gap: 10px;
+  z-index: 200;
+  animation: slideUp 0.4s cubic-bezier(0.4,0,0.2,1);
 }
-.q-btn {
-  padding: 10px 18px; border-radius: 12px;
-  background: var(--card); border: 1px solid var(--border);
-  color: var(--text-dim); font-family: inherit; font-weight: 600;
-  font-size: 13px; cursor: pointer; transition: all 0.2s;
-  display: flex; align-items: center; gap: 8px;
+.download-bar.show { display: flex; }
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
-.q-btn:hover { border-color: var(--border-hover); color: var(--text); }
-.q-btn.active {
-  background: linear-gradient(135deg, rgba(124,92,255,0.2), rgba(77,171,255,0.2));
-  border-color: var(--brand-1); color: var(--text);
-}
-.q-btn small { color: var(--text-mute); font-weight: 500; font-size: 11px; }
 
-/* SECTIONS */
+/* ============ SECTIONS ============ */
 section { padding: 50px 0; }
 .section-head { margin-bottom: 24px; }
 .section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
@@ -382,11 +562,7 @@ section { padding: 50px 0; }
   border: 1px solid var(--border); border-radius: var(--radius);
   transition: all 0.3s; backdrop-filter: blur(10px);
 }
-.feature:hover {
-  transform: translateY(-3px);
-  border-color: var(--border-hover);
-  background: var(--card-hover);
-}
+.feature:hover { transform: translateY(-3px); border-color: var(--border-hover); background: var(--card-hover); }
 .feature-icon {
   width: 42px; height: 42px; border-radius: 12px;
   display: grid; place-items: center; margin-bottom: 14px;
@@ -396,7 +572,7 @@ section { padding: 50px 0; }
 .feature h3 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
 .feature p { color: var(--text-dim); font-size: 13px; line-height: 1.6; }
 
-/* FOOTER */
+/* ============ FOOTER ============ */
 footer {
   border-top: 1px solid var(--border);
   padding: 30px 0; margin-top: 40px;
@@ -420,15 +596,15 @@ footer {
   text-transform: uppercase;
 }
 
-/* TOAST */
+/* ============ TOAST ============ */
 .toast-wrap {
-  position: fixed; bottom: 22px; right: 22px; z-index: 300;
+  position: fixed; bottom: 22px; right: 22px; z-index: 600;
   display: flex; flex-direction: column; gap: 10px;
   pointer-events: none;
 }
 .toast {
   background: linear-gradient(135deg, #14172a, #0e1020);
-  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  border: 1px solid var(--border); border-radius: 12px;
   padding: 13px 17px; color: var(--text);
   font-size: 13.5px; font-weight: 500;
   box-shadow: var(--shadow);
@@ -438,74 +614,70 @@ footer {
   pointer-events: auto;
   backdrop-filter: blur(20px);
 }
-@keyframes toastIn {
-  from { opacity: 0; transform: translateX(100%); }
-  to   { opacity: 1; transform: translateX(0); }
-}
+@keyframes toastIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
 .toast.out { animation: toastOut 0.4s forwards; }
-@keyframes toastOut {
-  to { opacity: 0; transform: translateX(120%); }
-}
-.toast-icon {
-  flex-shrink: 0; width: 18px; height: 18px;
-  display: grid; place-items: center;
-}
+@keyframes toastOut { to { opacity: 0; transform: translateX(120%); } }
+.toast-icon { flex-shrink: 0; width: 18px; height: 18px; display: grid; place-items: center; }
 .toast.success .toast-icon { color: var(--success); }
 .toast.error   .toast-icon { color: var(--danger); }
 .toast.info    .toast-icon { color: var(--brand-2); }
 .toast.warning .toast-icon { color: var(--warning); }
 
-/* LOADER */
+/* ============ INITIAL LOADER ============ */
 .loader-full {
-  position: fixed; inset: 0; z-index: 400;
-  background: rgba(6,7,13,0.95);
+  position: fixed; inset: 0; z-index: 700;
+  background: rgba(6,7,13,0.98);
   backdrop-filter: blur(10px);
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  gap: 20px; opacity: 0; pointer-events: none;
+  gap: 20px; padding: 30px; text-align: center;
+  opacity: 0; pointer-events: none;
   transition: opacity 0.4s;
 }
 .loader-full.show { opacity: 1; pointer-events: auto; }
-.loader-full .spinner { width: 56px; height: 56px; border-width: 4px; }
-.loader-text { color: var(--text-dim); font-size: 14px; font-weight: 500; }
+.loader-full .spinner { width: 60px; height: 60px; border-width: 4px; }
+.loader-text { color: var(--text-dim); font-size: 14px; font-weight: 500; max-width: 320px; }
 
-/* DOWNLOAD */
-.download-wrap {
-  display: flex; justify-content: center;
-  margin-top: 22px; gap: 12px; flex-wrap: wrap;
-}
-.download-wrap a { text-decoration: none; }
-
-/* RESPONSIVE */
+/* ============ RESPONSIVE ============ */
 @media (max-width: 700px) {
   .container { padding: 0 14px; }
   .hero { padding: 40px 0 20px; }
   .drop-zone { padding: 40px 20px; }
-  .editor-top { padding: 12px; }
-  .tool-group { padding: 5px 10px; }
-  input[type=range] { width: 70px; }
-  #canvas { max-height: 50vh; }
   .tabs { width: 100%; }
   .tab { flex: 1; justify-content: center; padding: 10px 12px; font-size: 13px; }
+  .toolbar-row { gap: 8px; }
+  .tool-chip { padding: 8px 11px; font-size: 12px; }
+  .tool-chip span { display: none; }
+  .tool-chip { padding: 9px 10px; }
+  .brush-control { padding: 8px 10px; gap: 8px; }
+  .brush-control input[type=range] { width: 70px; }
+  .btn-process { font-size: 14px; padding: 13px 18px; }
   .toast-wrap { left: 14px; right: 14px; bottom: 14px; }
   .toast { min-width: 0; }
+  .magnifier { width: 110px; height: 110px; }
 }
 
-/* SCROLLBAR */
+@media (min-width: 701px) {
+  .tool-chip span { display: inline; }
+}
+
+/* ============ SCROLLBAR ============ */
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb {
-  background: #1e2235; border-radius: 5px;
-  border: 2px solid var(--bg);
-}
+::-webkit-scrollbar-thumb { background: #1e2235; border-radius: 5px; border: 2px solid var(--bg); }
 ::-webkit-scrollbar-thumb:hover { background: #2a3050; }
 </style>
 </head>
 <body>
 
-<div class="loader-full show" id="cvLoader">
+<!-- INIT LOADER -->
+<div class="loader-full" id="initLoader">
   <div class="spinner"></div>
-  <div class="loader-text" id="cvLoaderText">Loading AI engine… (first time only)</div>
+  <div class="loader-text" id="initLoaderText">Loading AI engine…</div>
+  <div class="progress-bar-wrap" style="width:100%;max-width:320px;" id="initProgressBar">
+    <div class="progress-bar-fill" id="initProgressFill"></div>
+  </div>
+  <div class="progress-pct" id="initProgressPct">0%</div>
 </div>
 
 <nav>
@@ -519,7 +691,7 @@ footer {
         </svg>
       </div>
       <div class="logo-text"><span>LogoGone</span></div>
-      <span class="nav-tag">FREE</span>
+      <span class="nav-tag ai">AI</span>
     </div>
   </div>
 </nav>
@@ -527,9 +699,9 @@ footer {
 <main class="container">
 
   <section class="hero" id="uploadSection">
-    <div class="badge"><span class="badge-dot"></span> 100% browser-based · No upload · No server · Free forever</div>
+    <div class="badge"><span class="badge-dot"></span> AI-powered · 100% browser · Free forever</div>
     <h1>Remove any <span class="grad-text">logo</span>.<br>Keep the quality.</h1>
-    <p class="subtitle">Photos and videos. Up to 4K. Brush over the logo — our engine fills it perfectly. Nothing leaves your device.</p>
+    <p class="subtitle">Powered by LaMa AI inpainting. Brush over the logo — our AI fills it perfectly. Nothing leaves your device.</p>
 
     <div class="tabs" role="tablist">
       <button class="tab active" data-mode="photo" role="tab">
@@ -566,80 +738,21 @@ footer {
     </div>
   </section>
 
-  <section class="editor" id="editorSection" style="display:none;">
-    <div class="editor-top">
-      <div class="editor-tools">
-        <div class="tool-group">
-          <label>Brush</label>
-          <input type="range" id="brushSize" min="5" max="120" value="30" />
-          <span id="brushVal" class="brush-val">30</span>
-        </div>
-        <div class="tool-group">
-          <label>Mode</label>
-          <button class="btn btn-ghost btn-sm" id="modePaint" title="Paint to mark logo">✏️ Mark</button>
-          <button class="btn btn-ghost btn-sm" id="modeErase" title="Erase mark">🧽 Erase</button>
-        </div>
-      </div>
-      <div class="editor-tools">
-        <button class="btn btn-ghost btn-sm" id="btnUndo">↶ Undo</button>
-        <button class="btn btn-ghost btn-sm" id="btnClear">Clear</button>
-        <button class="btn btn-ghost btn-sm" id="btnNew">New file</button>
-      </div>
-    </div>
-
-    <div class="quality-picker" id="qualityPicker">
-      <button class="q-btn" data-q="480">⚡ 480p <small>fastest</small></button>
-      <button class="q-btn" data-q="720">⚡ 720p <small>fast</small></button>
-      <button class="q-btn active" data-q="1080">⚖️ 1080p <small>balanced</small></button>
-      <button class="q-btn" data-q="2160">🎯 4K <small>max</small></button>
-      <button class="q-btn" data-q="0">💎 Original <small>no resize</small></button>
-    </div>
-    <div class="progress-sub" id="qualityHint">1080p recommended for most use. 4K takes longer but keeps full resolution.</div>
-
-    <div class="canvas-wrap" id="canvasWrap">
-      <canvas id="canvas"></canvas>
-      <div class="magnifier" id="magnifier">
-        <canvas id="magnifierCanvas"></canvas>
-      </div>
-      <div class="canvas-overlay" id="canvasOverlay">
-        <div class="spinner"></div>
-        <div class="overlay-text" id="overlayText">Processing…</div>
-      </div>
-    </div>
-
-    <div class="editor-actions">
-      <button class="btn btn-primary" id="btnProcess">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-        </svg>
-        Remove logo
-      </button>
-      <button class="btn btn-ghost" id="btnPreview">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-        </svg>
-        Before / After
-      </button>
-    </div>
-
-    <div class="progress-card" id="progressCard" style="display:none;">
-      <div class="progress-head">
-        <span id="progressLabel">Processing…</span>
-        <span class="pct" id="progressPct">0%</span>
-      </div>
-      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="progress-sub" id="progressSub">Please keep this tab open</div>
-    </div>
-
-    <div class="download-wrap" id="downloadWrap"></div>
-  </section>
-
   <section>
     <div class="section-head">
       <div class="section-title">Why LogoGone</div>
-      <div class="section-sub">Built for real use — free, private, high quality.</div>
+      <div class="section-sub">Built for real use — free, private, AI-powered.</div>
     </div>
     <div class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </div>
+        <h3>LaMa AI engine</h3>
+        <p>Same AI model used by pro tools. Fills logos seamlessly — no smudge, no trace.</p>
+      </div>
       <div class="feature">
         <div class="feature-icon">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -656,16 +769,7 @@ footer {
           </svg>
         </div>
         <h3>4K ready</h3>
-        <p>Input 4K, output 4K. High bitrate output, no forced downscale.</p>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-          </svg>
-        </div>
-        <h3>Fast inpainting</h3>
-        <p>OpenCV Telea + Navier-Stokes — fills marked areas seamlessly.</p>
+        <p>Input 4K, output 4K. High bitrate, no forced downscale.</p>
       </div>
       <div class="feature">
         <div class="feature-icon">
@@ -684,12 +788,123 @@ footer {
 <footer>
   <div class="container footer-inner">
     <div>© <span id="year"></span> LogoGone · Remove logos. Keep quality.</div>
-    <div class="footer-note">Powered by OpenCV.js · Runs offline</div>
+    <div class="footer-note">Powered by LaMa AI · Runs offline</div>
   </div>
   <div class="container">
     <div class="footer-brand">Made in Bharat, Crafted by Anubhav Verma</div>
   </div>
 </footer>
+
+<!-- EDITOR (fullscreen) -->
+<div class="editor" id="editor">
+  <div class="editor-header">
+    <div class="editor-title">
+      <span class="editor-title-dot"></span>
+      <span id="editorFileInfo">Editing</span>
+    </div>
+    <button class="editor-close" id="editorClose" aria-label="Close editor">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="canvas-area" id="canvasArea">
+    <canvas id="canvas"></canvas>
+    <div class="magnifier" id="magnifier">
+      <canvas id="magnifierCanvas"></canvas>
+    </div>
+    <div class="processing-overlay" id="processingOverlay">
+      <div class="spinner"></div>
+      <div class="processing-title" id="processingTitle">Processing…</div>
+      <div class="processing-sub" id="processingSub">Please keep this tab open</div>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <!-- Quality picker (only video) -->
+    <div class="quality-row" id="qualityRow">
+      <button class="q-chip" data-q="480">480p</button>
+      <button class="q-chip" data-q="720">720p</button>
+      <button class="q-chip active" data-q="1080">1080p</button>
+      <button class="q-chip" data-q="2160">4K</button>
+      <button class="q-chip" data-q="0">Original</button>
+    </div>
+
+    <!-- Tools row -->
+    <div class="toolbar-row">
+      <div class="brush-control">
+        <div class="brush-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/>
+            <path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/>
+          </svg>
+        </div>
+        <input type="range" id="brushSize" min="5" max="150" value="40" />
+        <span class="brush-value" id="brushVal">40</span>
+      </div>
+
+      <button class="tool-chip active" id="modePaint" title="Mark logo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 19l7-7 3 3-7 7-3-3z"/>
+          <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/>
+          <path d="M2 2l7.586 7.586"/>
+          <circle cx="11" cy="11" r="2"/>
+        </svg>
+        <span>Mark</span>
+      </button>
+
+      <button class="tool-chip" id="modeErase" title="Erase mark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 20H7L3 16a2 2 0 0 1 0-2.83L13.17 3a2 2 0 0 1 2.83 0L22 9a2 2 0 0 1 0 2.83L13 21"/>
+          <line x1="18" y1="13" x2="11" y2="6"/>
+        </svg>
+        <span>Erase</span>
+      </button>
+
+      <button class="tool-chip" id="btnUndo" title="Undo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7v6h6"/>
+          <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
+        </svg>
+        <span>Undo</span>
+      </button>
+
+      <button class="tool-chip" id="btnClear" title="Clear marks">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          <path d="M10 11v6M14 11v6"/>
+        </svg>
+        <span>Clear</span>
+      </button>
+    </div>
+
+    <!-- Action row -->
+    <div class="toolbar-row">
+      <button class="btn-process" id="btnProcess">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        Remove logo
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DOWNLOAD BAR -->
+<div class="download-bar" id="downloadBar"></div>
+
+<!-- FULL PROGRESS OVERLAY -->
+<div class="progress-full" id="progressFull">
+  <div class="spinner"></div>
+  <h3 id="progressTitle">Processing…</h3>
+  <p id="progressMsg">Please keep this tab open</p>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progressFill"></div>
+  </div>
+  <div class="progress-pct" id="progressPct">0%</div>
+</div>
 
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -699,6 +914,9 @@ footer {
 const $  = (s) => document.querySelector(s);
 const $$ = (s) => document.querySelectorAll(s);
 
+/* ============================================================
+   TOAST
+   ============================================================ */
 function toast(msg, type = 'info', ms = 3200) {
   const wrap = $('#toastWrap');
   const el = document.createElement('div');
@@ -717,6 +935,9 @@ function toast(msg, type = 'info', ms = 3200) {
   }, ms);
 }
 
+/* ============================================================
+   STATE
+   ============================================================ */
 const state = {
   mode: 'photo',
   originalImage: null,
@@ -728,51 +949,160 @@ const state = {
   backupCanvas: null,
   history: [],
   painting: false,
-  brushSize: 30,
+  brushSize: 40,
   tool: 'paint',
   quality: 1080,
   lastPointer: null,
   resultBlob: null,
-  cvReady: false,
+  resultType: 'image/png',
   originalSourceW: 0,
-  originalSourceH: 0
+  originalSourceH: 0,
+  cvReady: false,
+  aiReady: false,
+  aiSession: null
 };
 
-function loadOpenCV() {
+/* ============================================================
+   ENGINE LOADING — LaMa (AI) primary, OpenCV fallback
+   ============================================================ */
+
+/* ---- LaMa model URL (configurable) ---- */
+const LAMA_MODEL_URL = 'https://huggingface.co/Carve/LaMa-ONNX/resolve/main/lama_fp32.onnx';
+const ORT_CDN = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/ort.min.js';
+const ORT_WASM_BASE = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/';
+
+function loadScript(src) {
   return new Promise((resolve, reject) => {
-    if (window.cv && window.cv.Mat) return resolve();
-    const script = document.createElement('script');
-    script.src = 'https://docs.opencv.org/4.8.0/opencv.js';
-    script.async = true;
-    script.onload = () => {
-      if (window.cv && window.cv.Mat) return resolve();
-      if (window.cv) {
-        window.cv['onRuntimeInitialized'] = () => resolve();
-      } else {
-        reject(new Error('OpenCV failed to load'));
-      }
-    };
-    script.onerror = () => reject(new Error('OpenCV script failed'));
-    document.head.appendChild(script);
+    if (document.querySelector('script[src="' + src + '"]')) return resolve();
+    const s = document.createElement('script');
+    s.src = src;
+    s.async = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('Failed to load ' + src));
+    document.head.appendChild(s);
   });
 }
 
-(async function initCV() {
-  const loader = $('#cvLoader');
-  const loaderText = $('#cvLoaderText');
-  try {
-    loaderText.textContent = 'Loading AI engine… (first time only)';
-    await loadOpenCV();
-    state.cvReady = true;
-    loader.classList.remove('show');
-    toast('Engine ready ✓', 'success', 2000);
-  } catch (e) {
-    loaderText.textContent = 'Failed to load engine. Check internet.';
-    toast('Engine failed to load', 'error', 5000);
-    console.error(e);
+/* ---- Load ONNX Runtime ---- */
+async function loadORT() {
+  await loadScript(ORT_CDN);
+  if (window.ort) {
+    window.ort.env.wasm.wasmPaths = ORT_WASM_BASE;
+    window.ort.env.wasm.numThreads = 1;
   }
-})();
+}
 
+/* ---- Download LaMa model with progress ---- */
+async function downloadModel(url, onProgress) {
+  const response = await fetch(url);
+  if (!response.ok) throw new Error('Model download failed: ' + response.status);
+
+  const contentLength = +(response.headers.get('Content-Length') || 0);
+  const reader = response.body.getReader();
+  const chunks = [];
+  let received = 0;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    received += value.length;
+    if (contentLength) {
+      onProgress((received / contentLength) * 100);
+    } else {
+      onProgress(-1);
+    }
+  }
+
+  const all = new Uint8Array(received);
+  let offset = 0;
+  for (const chunk of chunks) {
+    all.set(chunk, offset);
+    offset += chunk.length;
+  }
+  return all.buffer;
+}
+
+/* ---- Init engines ---- */
+async function initEngines() {
+  const loader = $('#initLoader');
+  const loaderText = $('#initLoaderText');
+  const progressBar = $('#initProgressBar');
+  const progressFill = $('#initProgressFill');
+  const progressPct = $('#initProgressPct');
+
+  loader.classList.add('show');
+  loaderText.textContent = 'Loading OpenCV (fallback engine)…';
+  progressBar.style.display = 'none';
+
+  // 1. Load OpenCV (fallback)
+  try {
+    await new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://docs.opencv.org/4.8.0/opencv.js';
+      s.async = true;
+      s.onload = () => {
+        if (window.cv && window.cv.Mat) return resolve();
+        if (window.cv) window.cv['onRuntimeInitialized'] = () => resolve();
+        else reject(new Error('OpenCV failed'));
+      };
+      s.onerror = () => reject(new Error('OpenCV script failed'));
+      document.head.appendChild(s);
+    });
+    state.cvReady = true;
+  } catch (e) {
+    console.warn('OpenCV failed to load', e);
+  }
+
+  // 2. Load ONNX Runtime + LaMa (AI)
+  try {
+    loaderText.textContent = 'Loading ONNX Runtime…';
+    await loadORT();
+
+    loaderText.textContent = 'Downloading AI model (~200MB, one-time)…';
+    progressBar.style.display = 'block';
+
+    const modelBuffer = await downloadModel(LAMA_MODEL_URL, (pct) => {
+      if (pct >= 0) {
+        progressFill.style.width = pct + '%';
+        progressPct.textContent = Math.round(pct) + '%';
+      } else {
+        progressFill.style.width = '50%';
+        progressPct.textContent = '…';
+      }
+    });
+
+    loaderText.textContent = 'Initializing AI engine…';
+    progressFill.style.width = '100%';
+    progressPct.textContent = '100%';
+
+    state.aiSession = await ort.InferenceSession.create(modelBuffer, {
+      executionProviders: ['wasm'],
+      graphOptimizationLevel: 'all'
+    });
+
+    state.aiReady = true;
+    toast('AI engine ready ✓', 'success', 2500);
+  } catch (e) {
+    console.error('AI engine failed', e);
+    toast('AI failed — using basic engine', 'warning', 4000);
+  }
+
+  loader.classList.remove('show');
+
+  if (!state.cvReady && !state.aiReady) {
+    loaderText.textContent = 'Failed to load any engine. Check internet.';
+    loader.classList.add('show');
+  } else {
+    setTimeout(() => toast('Ready ✓', 'success', 2000), 300);
+  }
+}
+
+initEngines();
+
+/* ============================================================
+   TABS / DROPZONE
+   ============================================================ */
 $$('.tab').forEach((tab) => {
   tab.addEventListener('click', () => {
     if (tab.classList.contains('active')) return;
@@ -783,10 +1113,12 @@ $$('.tab').forEach((tab) => {
       $('#dropTitle').textContent = 'Drop your photo here';
       $('#dropSub').textContent = 'or click to browse — JPG, PNG, WebP, HEIC';
       $('#fileInput').setAttribute('accept', 'image/*');
+      $('#qualityRow').classList.remove('show');
     } else {
       $('#dropTitle').textContent = 'Drop your video here';
       $('#dropSub').textContent = 'or click to browse — MP4, WebM, MOV (short clips work best)';
       $('#fileInput').setAttribute('accept', 'video/*');
+      $('#qualityRow').classList.add('show');
     }
   });
 });
@@ -825,7 +1157,9 @@ fileInput.addEventListener('change', (e) => {
 });
 
 function handleFile(file) {
-  if (!state.cvReady) { toast('Engine still loading, wait a moment…', 'warning'); return; }
+  if (!state.cvReady && !state.aiReady) {
+    toast('Engine still loading, wait…', 'warning'); return;
+  }
   const isImage = file.type.startsWith('image/');
   const isVideo = file.type.startsWith('video/');
   if (state.mode === 'photo' && !isImage) { toast('Please drop an image file', 'error'); return; }
@@ -834,6 +1168,9 @@ function handleFile(file) {
   else loadVideo(file);
 }
 
+/* ============================================================
+   FILE LOADING
+   ============================================================ */
 function loadImage(file) {
   const url = URL.createObjectURL(file);
   const img = new Image();
@@ -841,7 +1178,8 @@ function loadImage(file) {
     state.originalImage = img;
     setupEditor(img.naturalWidth, img.naturalHeight, img);
     URL.revokeObjectURL(url);
-    toast(`Photo loaded · ${img.naturalWidth}×${img.naturalHeight}`, 'success');
+    $('#editorFileInfo').textContent = 'Photo · ' + img.naturalWidth + '×' + img.naturalHeight;
+    toast('Photo loaded · ' + img.naturalWidth + '×' + img.naturalHeight, 'success');
   };
   img.onerror = () => { toast('Failed to load image', 'error'); URL.revokeObjectURL(url); };
   img.src = url;
@@ -861,7 +1199,8 @@ function loadVideo(file) {
     temp.width = vid.videoWidth; temp.height = vid.videoHeight;
     temp.getContext('2d').drawImage(vid, 0, 0);
     setupEditor(vid.videoWidth, vid.videoHeight, temp);
-    toast(`Video loaded · ${vid.videoWidth}×${vid.videoHeight} · ${vid.duration.toFixed(1)}s`, 'success');
+    $('#editorFileInfo').textContent = 'Video · ' + vid.videoWidth + '×' + vid.videoHeight + ' · ' + vid.duration.toFixed(1) + 's';
+    toast('Video loaded · ' + vid.videoWidth + '×' + vid.videoHeight, 'success');
     if (vid.duration > 30) toast('Tip: short clips (≤30s) process much faster', 'warning', 5000);
   };
   vid.onerror = () => { toast('Failed to load video', 'error'); URL.revokeObjectURL(url); };
@@ -876,14 +1215,19 @@ function seekTo(video, time) {
   });
 }
 
+/* ============================================================
+   EDITOR SETUP
+   ============================================================ */
 function setupEditor(w, h, source) {
-  $('#uploadSection').style.display = 'none';
-  $('#editorSection').style.display = 'block';
-  scrollTo({ top: 0, behavior: 'smooth' });
+  $('#editor').classList.add('active');
+  document.body.style.overflow = 'hidden';
 
-  const maxW = Math.min(window.innerWidth - 40, 1100);
-  const maxH = window.innerHeight * 0.65;
+  const area = $('#canvasArea');
+  const rect = area.getBoundingClientRect();
+  const availW = rect.width - 24;
+  const availH = rect.height - 24;
 
+  // Internal processing resolution cap
   const MAX_RES = 1600;
   let procW = w, procH = h;
   if (Math.max(w, h) > MAX_RES) {
@@ -896,11 +1240,10 @@ function setupEditor(w, h, source) {
   canvas.width = procW;
   canvas.height = procH;
 
-  const ratio = Math.min(maxW / procW, maxH / procH, 1);
-  const dispW = Math.round(procW * ratio);
-  const dispH = Math.round(procH * ratio);
-  canvas.style.width = dispW + 'px';
-  canvas.style.height = dispH + 'px';
+  // Display size preserving aspect
+  const ratio = Math.min(availW / procW, availH / procH, 1);
+  canvas.style.width = Math.round(procW * ratio) + 'px';
+  canvas.style.height = Math.round(procH * ratio) + 'px';
 
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   state.workCanvas = canvas;
@@ -917,12 +1260,15 @@ function setupEditor(w, h, source) {
   state.backupCanvas = null;
   state.originalSourceW = w;
   state.originalSourceH = h;
+  state.resultBlob = null;
 
+  $('#downloadBar').classList.remove('show');
   attachCanvasEvents();
-  updateDownloadUI(null);
-  $('#progressCard').style.display = 'none';
 }
 
+/* ============================================================
+   PAINTING
+   ============================================================ */
 function attachCanvasEvents() {
   const c = state.workCanvas;
   if (!c || c.dataset.bound) return;
@@ -930,41 +1276,55 @@ function attachCanvasEvents() {
 
   const mag = $('#magnifier');
   const magCanvas = $('#magnifierCanvas');
-  magCanvas.width = 130;
-  magCanvas.height = 130;
+  magCanvas.width = 260;
+  magCanvas.height = 260;
   const magCtx = magCanvas.getContext('2d');
 
   const getPos = (e) => {
     const rect = c.getBoundingClientRect();
     const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
     const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
-    const scaleX = c.width / rect.width;
-    const scaleY = c.height / rect.height;
     return {
-      x: cx * scaleX,
-      y: cy * scaleY,
+      x: cx * (c.width / rect.width),
+      y: cy * (c.height / rect.height),
       clientX: e.touches ? e.touches[0].clientX : e.clientX,
       clientY: e.touches ? e.touches[0].clientY : e.clientY
     };
   };
 
   const updateMagnifier = (p) => {
-    const wrapRect = c.parentElement.getBoundingClientRect();
-    let magLeft = p.clientX - wrapRect.left + 20;
-    if (magLeft + 130 > wrapRect.width) magLeft = magLeft - 170;
-    let magTop = p.clientY - wrapRect.top - 150;
-    if (magTop < 0) magTop = magTop + 170;
+    const area = c.parentElement;
+    const areaRect = area.getBoundingClientRect();
+    const magSize = mag.offsetWidth || 130;
+
+    let magLeft = p.clientX - areaRect.left + 20;
+    if (magLeft + magSize > areaRect.width) magLeft = magLeft - magSize - 40;
+    let magTop = p.clientY - areaRect.top - magSize - 20;
+    if (magTop < 0) magTop = magTop + magSize + 40;
 
     mag.style.left = magLeft + 'px';
     mag.style.top = magTop + 'px';
 
-    const zoom = 3;
-    const size = 130 / zoom;
-    magCtx.clearRect(0, 0, 130, 130);
-    magCtx.drawImage(state.workCanvas,
-      (p.x - size / 2), (p.y - size / 2), size, size,
-      0, 0, 130, 130
+    // Zoom factor
+    const zoom = 4;
+    const srcSize = magCanvas.width / zoom;
+    magCtx.clearRect(0, 0, magCanvas.width, magCanvas.height);
+    magCtx.imageSmoothingEnabled = false;
+    magCtx.drawImage(
+      state.workCanvas,
+      p.x - srcSize / 2, p.y - srcSize / 2, srcSize, srcSize,
+      0, 0, magCanvas.width, magCanvas.height
     );
+
+    // Crosshair
+    magCtx.strokeStyle = 'rgba(124,92,255,0.8)';
+    magCtx.lineWidth = 2;
+    magCtx.beginPath();
+    magCtx.moveTo(magCanvas.width / 2, 0);
+    magCtx.lineTo(magCanvas.width / 2, magCanvas.height);
+    magCtx.moveTo(0, magCanvas.height / 2);
+    magCtx.lineTo(magCanvas.width, magCanvas.height / 2);
+    magCtx.stroke();
   };
 
   const start = (e) => {
@@ -1031,9 +1391,10 @@ function drawMark(from, to) {
     mctx.fill();
     mctx.restore();
 
+    // Visual: translucent brand tint
     ctx.save();
-    ctx.strokeStyle = 'rgba(124,92,255,0.3)';
-    ctx.fillStyle = 'rgba(124,92,255,0.3)';
+    ctx.strokeStyle = 'rgba(124,92,255,0.35)';
+    ctx.fillStyle = 'rgba(124,92,255,0.35)';
     ctx.lineWidth = size;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
@@ -1084,17 +1445,16 @@ function pushHistory() {
     snap.width = state.maskCanvas.width;
     snap.height = state.maskCanvas.height;
     snap.getContext('2d').drawImage(state.maskCanvas, 0, 0);
-
     const vis = document.createElement('canvas');
     vis.width = state.workCanvas.width;
     vis.height = state.workCanvas.height;
     vis.getContext('2d').drawImage(state.workCanvas, 0, 0);
-
     state.history.push({ mask: snap, visible: vis });
     if (state.history.length > 30) state.history.shift();
   } catch (e) {}
 }
 
+/* Undo / Clear */
 $('#btnUndo').addEventListener('click', () => {
   if (!state.history.length) { toast('Nothing to undo', 'info'); return; }
   const last = state.history.pop();
@@ -1112,8 +1472,6 @@ $('#btnClear').addEventListener('click', () => {
   state.backupCanvas = null;
 });
 
-$('#btnNew').addEventListener('click', () => location.reload());
-
 function redrawSource() {
   const src = state.mode === 'photo' ? state.originalImage : state.originalVideo;
   if (!src) return;
@@ -1121,116 +1479,300 @@ function redrawSource() {
   state.workCtx.drawImage(src, 0, 0, state.workCanvas.width, state.workCanvas.height);
 }
 
+/* Brush size */
 $('#brushSize').addEventListener('input', (e) => {
   state.brushSize = +e.target.value;
   $('#brushVal').textContent = state.brushSize;
 });
 
-$('#modePaint').addEventListener('click', () => {
-  state.tool = 'paint';
-  $('#modePaint').style.background = 'linear-gradient(135deg, rgba(124,92,255,0.3), rgba(77,171,255,0.3))';
-  $('#modeErase').style.background = '';
-});
+/* Tool toggle */
+function setTool(tool) {
+  state.tool = tool;
+  $('#modePaint').classList.toggle('active', tool === 'paint');
+  $('#modeErase').classList.toggle('active', tool === 'erase');
+}
+$('#modePaint').addEventListener('click', () => setTool('paint'));
+$('#modeErase').addEventListener('click', () => setTool('erase'));
+setTool('paint');
 
-$('#modeErase').addEventListener('click', () => {
-  state.tool = 'erase';
-  $('#modeErase').style.background = 'linear-gradient(135deg, rgba(124,92,255,0.3), rgba(77,171,255,0.3))';
-  $('#modePaint').style.background = '';
-});
-
-$$('.q-btn').forEach((b) => {
+/* Quality */
+$$('.q-chip').forEach((b) => {
   b.addEventListener('click', () => {
-    $$('.q-btn').forEach((x) => x.classList.remove('active'));
+    $$('.q-chip').forEach((x) => x.classList.remove('active'));
     b.classList.add('active');
     state.quality = +b.dataset.q;
-    const hints = {
-      480:  '480p — fastest, lowest quality. Good for testing.',
-      720:  '720p — fast, decent quality.',
-      1080: '1080p — recommended. Best balance of speed and quality.',
-      2160: '4K — slowest. Keeps full 4K resolution. May take minutes on long clips.',
-      0:    'Original — keeps source resolution exactly as it is.'
-    };
-    $('#qualityHint').textContent = hints[state.quality];
   });
 });
 
-$('#btnProcess').addEventListener('click', async () => {
-  if (!state.cvReady) { toast('Engine still loading…', 'warning'); return; }
-
-  const maskData = state.maskCtx.getImageData(0, 0, state.maskCanvas.width, state.maskCanvas.height).data;
-  let hasMark = false;
-  for (let i = 3; i < maskData.length; i += 4) {
-    if (maskData[i] > 10) { hasMark = true; break; }
+/* Close editor */
+$('#editorClose').addEventListener('click', () => {
+  if (state.history.length > 0 || state.resultBlob) {
+    if (!confirm('Discard changes and close?')) return;
   }
-  if (!hasMark) { toast('Brush over the logo first ✏️', 'warning'); return; }
+  $('#editor').classList.remove('active');
+  document.body.style.overflow = '';
+  $('#downloadBar').classList.remove('show');
+  location.reload();
+});
+
+/* ============================================================
+   PROGRESS OVERLAY
+   ============================================================ */
+function showProgress(title, msg) {
+  $('#progressTitle').textContent = title;
+  $('#progressMsg').textContent = msg;
+  $('#progressFull').classList.add('show');
+}
+function setProgress(pct) {
+  const c = Math.max(0, Math.min(100, pct));
+  $('#progressFill').style.width = c + '%';
+  $('#progressPct').textContent = Math.round(c) + '%';
+}
+function hideProgress() {
+  $('#progressFull').classList.remove('show');
+}
+
+/* ============================================================
+   PROCESSING
+   ============================================================ */
+$('#btnProcess').addEventListener('click', async () => {
+  if (!state.cvReady && !state.aiReady) { toast('Engine loading…', 'warning'); return; }
+
+  // Check mask has marks
+  const md = state.maskCtx.getImageData(0, 0, state.maskCanvas.width, state.maskCanvas.height).data;
+  let has = false;
+  for (let i = 3; i < md.length; i += 4) { if (md[i] > 10) { has = true; break; } }
+  if (!has) { toast('Brush over the logo first ✏️', 'warning'); return; }
 
   if (state.mode === 'photo') await processPhoto();
   else await processVideo();
 });
 
-async function processPhoto() {
-  showOverlay('Removing logo…');
-  try {
-    await new Promise((r) => setTimeout(r, 50));
-    const resultCanvas = inpaintCanvas(state.workCanvas, state.maskCanvas, 5);
+/* ============================================================
+   LAMA INFERENCE
+   ============================================================ */
+async function runLaMa(imageData, maskData, w, h) {
+  // imageData: ImageData of image region
+  // maskData: ImageData of mask region (same size)
+  // returns: ImageData of inpainted result
 
-    state.workCtx.clearRect(0, 0, state.workCanvas.width, state.workCanvas.height);
-    state.workCtx.drawImage(resultCanvas, 0, 0);
+  const session = state.aiSession;
+  if (!session) throw new Error('No AI session');
+
+  // LaMa fixed input size 512x512
+  const SIZE = 512;
+
+  // Prepare input canvas at 512x512
+  const imgCanvas = document.createElement('canvas');
+  imgCanvas.width = SIZE; imgCanvas.height = SIZE;
+  const ictx = imgCanvas.getContext('2d');
+  ictx.imageSmoothingQuality = 'high';
+
+  const mskCanvas = document.createElement('canvas');
+  mskCanvas.width = SIZE; mskCanvas.height = SIZE;
+  const mctx = mskCanvas.getContext('2d');
+
+  // Draw scaled image
+  const tmpImg = document.createElement('canvas');
+  tmpImg.width = w; tmpImg.height = h;
+  tmpImg.getContext('2d').putImageData(imageData, 0, 0);
+  ictx.drawImage(tmpImg, 0, 0, SIZE, SIZE);
+
+  const tmpMsk = document.createElement('canvas');
+  tmpMsk.width = w; tmpMsk.height = h;
+  tmpMsk.getContext('2d').putImageData(maskData, 0, 0);
+  mctx.drawImage(tmpMsk, 0, 0, SIZE, SIZE);
+
+  // Get pixel data
+  const imgPx = ictx.getImageData(0, 0, SIZE, SIZE).data;
+  const mskPx = mctx.getImageData(0, 0, SIZE, SIZE).data;
+
+  // Build tensors
+  // Image: [1, 3, 512, 512] float32, normalized 0..1
+  const imgTensorData = new Float32Array(1 * 3 * SIZE * SIZE);
+  const mskTensorData = new Float32Array(1 * 1 * SIZE * SIZE);
+  const plane = SIZE * SIZE;
+
+  for (let i = 0; i < plane; i++) {
+    imgTensorData[0 * plane + i] = imgPx[i * 4 + 0] / 255;     // R
+    imgTensorData[1 * plane + i] = imgPx[i * 4 + 1] / 255;     // G
+    imgTensorData[2 * plane + i] = imgPx[i * 4 + 2] / 255;     // B
+    mskTensorData[i] = mskPx[i * 4 + 3] > 10 ? 1 : 0;          // mask from alpha
+  }
+
+  const imgTensor = new ort.Tensor('float32', imgTensorData, [1, 3, SIZE, SIZE]);
+  const mskTensor = new ort.Tensor('float32', mskTensorData, [1, 1, SIZE, SIZE]);
+
+  // Run — try common input names
+  const feeds = {};
+  const inputNames = session.inputNames;
+  if (inputNames.length === 2) {
+    feeds[inputNames[0]] = imgTensor;
+    feeds[inputNames[1]] = mskTensor;
+  } else {
+    // Assume first is image
+    feeds[inputNames[0]] = imgTensor;
+  }
+
+  const results = await session.run(feeds);
+  const outKey = session.outputNames[0];
+  const out = results[outKey];
+
+  // Convert output to ImageData (512x512)
+  const outData = out.data;
+  const outCanvas = document.createElement('canvas');
+  outCanvas.width = SIZE; outCanvas.height = SIZE;
+  const octx = outCanvas.getContext('2d');
+  const outImgData = octx.createImageData(SIZE, SIZE);
+  const outPlane = SIZE * SIZE;
+
+  for (let i = 0; i < outPlane; i++) {
+    let r = outData[0 * outPlane + i] * 255;
+    let g = outData[1 * outPlane + i] * 255;
+    let b = outData[2 * outPlane + i] * 255;
+    r = Math.max(0, Math.min(255, r));
+    g = Math.max(0, Math.min(255, g));
+    b = Math.max(0, Math.min(255, b));
+    outImgData.data[i * 4 + 0] = r;
+    outImgData.data[i * 4 + 1] = g;
+    outImgData.data[i * 4 + 2] = b;
+    outImgData.data[i * 4 + 3] = 255;
+  }
+  octx.putImageData(outImgData, 0, 0);
+
+  // Scale back to original region size
+  const finalCanvas = document.createElement('canvas');
+  finalCanvas.width = w; finalCanvas.height = h;
+  const fctx = finalCanvas.getContext('2d');
+  fctx.imageSmoothingQuality = 'high';
+  fctx.drawImage(outCanvas, 0, 0, w, h);
+
+  return fctx.getImageData(0, 0, w, h);
+}
+
+/* ============================================================
+   PHOTO PROCESSING
+   ============================================================ */
+async function processPhoto() {
+  showProgress('Removing logo…', 'AI is analyzing and filling the marked area.');
+
+  try {
+    await new Promise((r) => setTimeout(r, 100));
+
+    let resultImageData;
+    const W = state.workCanvas.width;
+    const H = state.workCanvas.height;
+
+    if (state.aiReady) {
+      // AI: LaMa
+      setProgress(10);
+      const imgData = state.workCtx.getImageData(0, 0, W, H);
+      const mskData = state.maskCtx.getImageData(0, 0, W, H);
+      setProgress(30);
+      resultImageData = await runLaMa(imgData, mskData, W, H);
+      setProgress(85);
+    } else {
+      // Fallback: OpenCV
+      const r = inpaintOpenCV(state.workCanvas, state.maskCanvas, 5);
+      resultImageData = r.getContext('2d').getImageData(0, 0, W, H);
+      setProgress(70);
+    }
+
+    // Blend result into visible canvas: only masked region
+    // Create a result canvas at work size
+    const resCanvas = document.createElement('canvas');
+    resCanvas.width = W; resCanvas.height = H;
+    resCanvas.getContext('2d').putImageData(resultImageData, 0, 0);
+
+    // Compose: original image + (result where mask is set)
+    const finalCanvas = document.createElement('canvas');
+    finalCanvas.width = W; finalCanvas.height = H;
+    const fctx = finalCanvas.getContext('2d');
+
+    // Draw original
+    const origData = state.workCtx.getImageData(0, 0, W, H);
+    fctx.putImageData(origData, 0, 0);
+
+    // Get mask alpha
+    const maskPx = state.maskCtx.getImageData(0, 0, W, H).data;
+    const resPx = resultImageData.data;
+    const finalImgData = fctx.getImageData(0, 0, W, H);
+
+    for (let i = 0; i < maskPx.length; i += 4) {
+      const m = maskPx[i + 3] / 255;
+      if (m > 0.01) {
+        finalImgData.data[i + 0] = resPx[i + 0] * m + finalImgData.data[i + 0] * (1 - m);
+        finalImgData.data[i + 1] = resPx[i + 1] * m + finalImgData.data[i + 1] * (1 - m);
+        finalImgData.data[i + 2] = resPx[i + 2] * m + finalImgData.data[i + 2] * (1 - m);
+      }
+    }
+
+    state.workCtx.putImageData(finalImgData, 0, 0);
     state.backupCanvas = null;
 
+    setProgress(90);
+
+    // Export at original resolution
     const outCanvas = document.createElement('canvas');
     outCanvas.width = state.originalSourceW;
     outCanvas.height = state.originalSourceH;
     const octx = outCanvas.getContext('2d');
     octx.imageSmoothingEnabled = true;
     octx.imageSmoothingQuality = 'high';
-    octx.drawImage(resultCanvas, 0, 0, outCanvas.width, outCanvas.height);
+    octx.drawImage(finalCanvas, 0, 0, outCanvas.width, outCanvas.height);
 
     outCanvas.toBlob((blob) => {
       state.resultBlob = blob;
+      state.resultType = 'image/png';
       const url = URL.createObjectURL(blob);
-      updateDownloadUI(url, 'logoGone.png');
-      toast('Logo removed ✓', 'success');
+      showDownload(url, 'logoGone.png', 'PNG', 'image/png');
+      setProgress(100);
+      hideProgress();
+      toast('Logo removed ✓ Download below', 'success');
     }, 'image/png');
 
-    hideOverlay();
   } catch (e) {
     console.error(e);
-    hideOverlay();
-    toast('Processing failed: ' + (e.message || e), 'error');
+    hideProgress();
+    toast('Failed: ' + (e.message || e), 'error');
   }
 }
 
-function inpaintCanvas(sourceCanvas, maskCanvas, radius = 5) {
-  const src  = cv.imread(sourceCanvas);
+/* OpenCV fallback */
+function inpaintOpenCV(sourceCanvas, maskCanvas, radius) {
+  const src = cv.imread(sourceCanvas);
   const mask = cv.imread(maskCanvas);
-
   const srcRgb = new cv.Mat();
   cv.cvtColor(src, srcRgb, cv.COLOR_RGBA2RGB);
-
   const gray = new cv.Mat();
   cv.cvtColor(mask, gray, cv.COLOR_RGBA2GRAY);
   cv.threshold(gray, gray, 10, 255, cv.THRESH_BINARY);
-
   const dst = new cv.Mat();
   cv.inpaint(srcRgb, gray, dst, radius, cv.INPAINT_TELEA);
-
   const out = document.createElement('canvas');
   out.width = sourceCanvas.width;
   out.height = sourceCanvas.height;
   cv.imshow(out, dst);
-
   src.delete(); srcRgb.delete(); mask.delete(); gray.delete(); dst.delete();
   return out;
 }
 
+/* ============================================================
+   VIDEO PROCESSING
+   ============================================================ */
 async function processVideo() {
   const vid = state.originalVideo;
   if (!vid) return;
 
-  showOverlay('Preparing video…');
+  if (!state.aiReady) {
+    toast('Video needs AI engine. Please wait for AI to load.', 'warning', 5000);
+    return;
+  }
+
+  showProgress('Processing video…', 'Frame-by-frame AI inpainting. This may take a while.');
+
   try {
-    await new Promise((r) => setTimeout(r, 50));
+    await new Promise((r) => setTimeout(r, 100));
 
     const srcW = state.originalSourceW;
     const srcH = state.originalSourceH;
@@ -1256,11 +1798,8 @@ async function processVideo() {
     frameCanvas.height = state.workCanvas.height;
     const frameCtx = frameCanvas.getContext('2d', { willReadFrequently: true });
 
-    const maskSrc = cv.imread(state.maskCanvas);
-    const maskGray = new cv.Mat();
-    cv.cvtColor(maskSrc, maskGray, cv.COLOR_RGBA2GRAY);
-    cv.threshold(maskGray, maskGray, 10, 255, cv.THRESH_BINARY);
-    maskSrc.delete();
+    // Prepare mask ImageData once
+    const maskData = state.maskCtx.getImageData(0, 0, frameCanvas.width, frameCanvas.height);
 
     const stream = outCanvas.captureStream(30);
 
@@ -1276,20 +1815,14 @@ async function processVideo() {
     });
     const chunks = [];
     recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
-
     const recordingDone = new Promise((resolve) => {
       recorder.onstop = () => resolve(new Blob(chunks, { type: mimeType }));
     });
-
-    $('#progressCard').style.display = 'block';
-    $('#progressLabel').textContent = 'Processing video…';
-    setProgress(0);
 
     const duration = vid.duration;
     const fps = 30;
     const totalFrames = Math.max(1, Math.ceil(duration * fps));
     let frameIdx = 0;
-    const startTime = performance.now();
 
     vid.pause();
     vid.currentTime = 0;
@@ -1302,115 +1835,110 @@ async function processVideo() {
       frameCtx.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
       frameCtx.drawImage(vid, 0, 0, frameCanvas.width, frameCanvas.height);
 
-      const src = cv.imread(frameCanvas);
-      const srcRgb = new cv.Mat();
-      cv.cvtColor(src, srcRgb, cv.COLOR_RGBA2RGB);
+      const imgData = frameCtx.getImageData(0, 0, frameCanvas.width, frameCanvas.height);
 
-      const dst = new cv.Mat();
-      cv.inpaint(srcRgb, maskGray, dst, 5, cv.INPAINT_TELEA);
+      // AI inpaint
+      let resultData;
+      try {
+        resultData = await runLaMa(imgData, maskData, frameCanvas.width, frameCanvas.height);
+      } catch (e) {
+        console.warn('AI failed for frame, using OpenCV', e);
+        const r = inpaintOpenCV(frameCanvas, state.maskCanvas, 5);
+        resultData = r.getContext('2d').getImageData(0, 0, frameCanvas.width, frameCanvas.height);
+      }
 
-      const tmp = document.createElement('canvas');
-      tmp.width = frameCanvas.width;
-      tmp.height = frameCanvas.height;
-      cv.imshow(tmp, dst);
+      // Blend
+      const resCanvas = document.createElement('canvas');
+      resCanvas.width = frameCanvas.width;
+      resCanvas.height = frameCanvas.height;
+      resCanvas.getContext('2d').putImageData(resultData, 0, 0);
+
+      const composited = document.createElement('canvas');
+      composited.width = frameCanvas.width;
+      composited.height = frameCanvas.height;
+      const cctx = composited.getContext('2d');
+      cctx.drawImage(frameCanvas, 0, 0);
+      const cImgData = cctx.getImageData(0, 0, frameCanvas.width, frameCanvas.height);
+      const maskPx = maskData.data;
+      const resPx = resultData.data;
+      for (let i = 0; i < maskPx.length; i += 4) {
+        const m = maskPx[i + 3] / 255;
+        if (m > 0.01) {
+          cImgData.data[i + 0] = resPx[i + 0] * m + cImgData.data[i + 0] * (1 - m);
+          cImgData.data[i + 1] = resPx[i + 1] * m + cImgData.data[i + 1] * (1 - m);
+          cImgData.data[i + 2] = resPx[i + 2] * m + cImgData.data[i + 2] * (1 - m);
+        }
+      }
+      cctx.putImageData(cImgData, 0, 0);
 
       outCtx.clearRect(0, 0, outCanvas.width, outCanvas.height);
-      outCtx.drawImage(tmp, 0, 0, outCanvas.width, outCanvas.height);
-
-      src.delete(); srcRgb.delete(); dst.delete();
+      outCtx.drawImage(composited, 0, 0, outCanvas.width, outCanvas.height);
 
       frameIdx++;
-      if (frameIdx % 3 === 0 || t + (1 / fps) >= duration) {
+      if (frameIdx % 2 === 0 || t + (1 / fps) >= duration) {
         const pct = Math.min(100, (frameIdx / totalFrames) * 100);
         setProgress(pct);
-        const elapsed = (performance.now() - startTime) / 1000;
-        const eta = pct > 5 ? (elapsed / pct) * (100 - pct) : 0;
-        $('#progressSub').textContent = `Frame ${frameIdx}/${totalFrames} · ETA ~${Math.round(eta)}s`;
+        const msg = 'Frame ' + frameIdx + ' / ' + totalFrames;
+        $('#progressMsg').textContent = msg;
         await new Promise((r) => setTimeout(r, 0));
       }
     }
 
-    await new Promise((r) => setTimeout(r, 300));
-
+    await new Promise((r) => setTimeout(r, 400));
     recorder.stop();
     const blob = await recordingDone;
-    maskGray.delete();
 
     state.resultBlob = blob;
-    const url = URL.createObjectURL(blob);
+    state.resultType = blob.type;
     const ext = mimeType.includes('webm') ? 'webm' : 'mp4';
-    updateDownloadUI(url, `logoGone.${ext}`);
+    const url = URL.createObjectURL(blob);
+    showDownload(url, 'logoGone.' + ext, ext.toUpperCase(), blob.type);
 
-    $('#progressLabel').textContent = 'Done ✓';
     setProgress(100);
-    $('#progressSub').textContent = `Output: ${targetW}×${targetH} · ${(blob.size / 1024 / 1024).toFixed(1)} MB`;
-    hideOverlay();
+    hideProgress();
     toast('Video processed ✓ Download below', 'success', 5000);
+
   } catch (e) {
     console.error(e);
-    hideOverlay();
-    toast('Video processing failed: ' + (e.message || e), 'error', 6000);
+    hideProgress();
+    toast('Video failed: ' + (e.message || e), 'error', 6000);
   }
 }
 
-function setProgress(pct) {
-  const clamped = Math.max(0, Math.min(100, pct));
-  $('#progressFill').style.width = clamped + '%';
-  $('#progressPct').textContent = Math.round(clamped) + '%';
-}
-
-function showOverlay(text) {
-  $('#overlayText').textContent = text;
-  $('#canvasOverlay').classList.add('show');
-}
-function hideOverlay() {
-  $('#canvasOverlay').classList.remove('show');
-}
-
-function updateDownloadUI(url, filename) {
-  const wrap = $('#downloadWrap');
-  wrap.innerHTML = '';
-  if (!url) return;
+/* ============================================================
+   DOWNLOAD
+   ============================================================ */
+function showDownload(url, filename, label, mime) {
+  const bar = $('#downloadBar');
+  bar.innerHTML = '';
   const a = document.createElement('a');
   a.href = url;
-  a.download = filename || 'logoGone';
+  a.download = filename;
   a.className = 'btn btn-primary';
+  a.style.flex = '1';
+  a.style.maxWidth = '380px';
+  a.style.justifyContent = 'center';
+  a.style.textDecoration = 'none';
   a.innerHTML = `
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
       <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
     </svg>
-    Download ${filename ? '(' + filename.split('.').pop().toUpperCase() + ')' : ''}
+    Download ${label}
   `;
-  wrap.appendChild(a);
+  bar.appendChild(a);
+  bar.classList.add('show');
 }
 
-let previewState = false;
-$('#btnPreview').addEventListener('click', () => {
-  if (!state.resultBlob) { toast('Process first to preview', 'info'); return; }
-  previewState = !previewState;
-  if (previewState) {
-    redrawSource();
-    toast('Showing original', 'info', 1500);
-  } else {
-    const url = URL.createObjectURL(state.resultBlob);
-    const img = new Image();
-    img.onload = () => {
-      state.workCtx.clearRect(0, 0, state.workCanvas.width, state.workCanvas.height);
-      state.workCtx.drawImage(img, 0, 0, state.workCanvas.width, state.workCanvas.height);
-      URL.revokeObjectURL(url);
-    };
-    img.src = url;
-    toast('Showing result', 'info', 1500);
-  }
-});
-
+/* ============================================================
+   BOOT
+   ============================================================ */
 $('#year').textContent = new Date().getFullYear();
-$('#modePaint').style.background = 'linear-gradient(135deg, rgba(124,92,255,0.3), rgba(77,171,255,0.3))';
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('#btnUndo').click(); }
   if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('#btnProcess').click(); }
+  if (e.key === 'Escape') { $('#editorClose').click(); }
 });
 </script>
 </body>
