@@ -65,6 +65,7 @@ h1{font-size:clamp(34px,6vw,62px);font-weight:900;letter-spacing:-0.04em;line-he
 .editor-close:hover{background:rgba(255,85,119,0.15);border-color:rgba(255,85,119,0.3);color:var(--danger);}
 .canvas-area{flex:1;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:12px;background-image:linear-gradient(45deg,#0e1018 25%,transparent 25%),linear-gradient(-45deg,#0e1018 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#0e1018 75%),linear-gradient(-45deg,transparent 75%,#0e1018 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0px;background-color:#0a0c14;touch-action:none;}
 #canvas{display:block;max-width:100%;max-height:100%;width:auto;height:auto;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.6);cursor:crosshair;touch-action:none;}
+#previewVideo{display:none;max-width:100%;max-height:100%;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.6);background:#000;}
 .magnifier{position:absolute;width:130px;height:130px;border-radius:50%;border:3px solid var(--brand-1);background:#000;overflow:hidden;pointer-events:none;display:none;box-shadow:0 10px 40px rgba(0,0,0,0.8),0 0 0 4px rgba(124,92,255,0.15);z-index:20;}
 #magnifierCanvas{width:100%;height:100%;display:block;}
 .toolbar{flex-shrink:0;background:rgba(11,13,24,0.95);backdrop-filter:blur(24px);border-top:1px solid var(--border);padding:12px 14px;padding-bottom:max(12px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:12px;z-index:10;}
@@ -183,7 +184,11 @@ footer{border-top:1px solid var(--border);padding:30px 0;margin-top:40px;color:v
 
 <div class="editor" id="editor">
   <div class="editor-header"><div class="editor-title"><span class="editor-title-dot"></span><span id="editorFileInfo">Editing</span></div><button class="editor-close" id="editorClose"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
-  <div class="canvas-area" id="canvasArea"><canvas id="canvas"></canvas><div class="magnifier" id="magnifier"><canvas id="magnifierCanvas"></canvas></div></div>
+  <div class="canvas-area" id="canvasArea">
+    <canvas id="canvas"></canvas>
+    <video id="previewVideo" controls playsinline></video>
+    <div class="magnifier" id="magnifier"><canvas id="magnifierCanvas"></canvas></div>
+  </div>
   <div class="toolbar">
     <div class="prompt-box" id="promptBox" style="display:none;">
       <label>Describe where the logo is</label>
@@ -191,7 +196,7 @@ footer{border-top:1px solid var(--border);padding:30px 0;margin-top:40px;color:v
       <div class="prompt-hint">Example: "Remove the watermark in the center of the screen"</div>
     </div>
     <div class="quality-row" id="qualityRow"><button class="q-chip active" data-q="480">480p Free</button><button class="q-chip" data-q="720">720p</button><button class="q-chip" data-q="1080">1080p</button></div>
-    <div class="toolbar-row" id="brushToolsRow">
+    <div class="toolbar-row" id="brushToolsRow" style="display:none;">
       <div class="brush-control"><div class="brush-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></div><input type="range" id="brushSize" min="5" max="150" value="40" /><span class="brush-value" id="brushVal">40</span></div>
       <button class="tool-chip active" id="modePaint"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg><span>Mark</span></button>
       <button class="tool-chip" id="modeErase"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16a2 2 0 0 1 0-2.83L13.17 3a2 2 0 0 1 2.83 0L22 9a2 2 0 0 1 0 2.83L13 21"/></svg><span>Erase</span></button>
@@ -214,21 +219,16 @@ const $$=(s)=>document.querySelectorAll(s);
 function toast(msg,type='info',ms=3200){const wrap=$('#toastWrap');const el=document.createElement('div');el.className='toast '+type;const icons={success:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',error:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',info:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',warning:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'};el.innerHTML='<div class="toast-icon">'+(icons[type]||icons.info)+'</div><div>'+msg+'</div>';wrap.appendChild(el);setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),400);},ms);}
 
 /* ============================================================
-   ⚠️ MAGIC HOUR API KEY — YAHAN PASTE KAR
-   Signup: https://magichour.ai/developer (400 free credits + 100/day)
+   MAGIC HOUR API KEY (Already pasted)
+   ⚠️ WARNING: Ye key public ho chuki hai — Magic Hour pe jaake
+   delete karo aur nayi banao. Phir yahan replace karo.
    ============================================================ */
 const MAGIC_HOUR_API_KEY = 'mhk_live_mW1VwroJB4ut56aVemPuJwwIAU8ciswSqSEAIImxxYww0OIs5cc1fhIx0Vzy5PZ8NvkRz1RneErUhEyf';
 
 const state={mode:'video',originalImage:null,originalVideo:null,originalVideoFile:null,workCanvas:null,workCtx:null,maskCanvas:null,maskCtx:null,backupCanvas:null,history:[],painting:false,brushSize:40,tool:'paint',quality:480,lastPointer:null,resultBlob:null,originalSourceW:0,originalSourceH:0,cvReady:false,aiReady:false,aiSession:null,isIOS:/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)};
 
-/* ============================================================
-   ENGINE BADGE
-   ============================================================ */
 function setEngineBadge(type,text){const b=$('#engineBadge');b.className='nav-tag '+type;b.textContent=text||'Ready';}
 
-/* ============================================================
-   OPENCV LOADER
-   ============================================================ */
 function loadScript(src){return new Promise((resolve,reject)=>{if(document.querySelector('script[src="'+src+'"]'))return resolve();const s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>resolve();s.onerror=()=>reject(new Error('Failed to load '+src));document.head.appendChild(s);});}
 
 async function loadOpenCV(){
@@ -241,14 +241,10 @@ async function loadOpenCV(){
       s.onerror=()=>reject(new Error('OpenCV script blocked'));
       document.head.appendChild(s);
     });
-    state.cvReady=true;
-    return true;
+    state.cvReady=true;return true;
   }catch(e){console.warn('OpenCV failed:',e);return false;}
 }
 
-/* ============================================================
-   LaMa AI LOADER (Background, PC only)
-   ============================================================ */
 const AI_MODEL_URL='https://huggingface.co/Carve/LaMa-ONNX/resolve/main/lama_fp32.onnx';
 const ORT_CDN='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/ort.min.js';
 const ORT_WASM_BASE='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/';
@@ -263,23 +259,14 @@ async function loadAI(){
     const total=+(response.headers.get('Content-Length')||0);
     const reader=response.body.getReader();
     const chunks=[];let received=0;
-    while(true){
-      const{done,value}=await reader.read();
-      if(done)break;
-      chunks.push(value);received+=value.length;
-      if(total){const pct=Math.round((received/total)*90)+10;setEngineBadge('loading','AI '+pct+'%');}
-    }
+    while(true){const{done,value}=await reader.read();if(done)break;chunks.push(value);received+=value.length;if(total){const pct=Math.round((received/total)*90)+10;setEngineBadge('loading','AI '+pct+'%');}}
     const all=new Uint8Array(received);let offset=0;
     for(const c of chunks){all.set(c,offset);offset+=c.length;}
     setEngineBadge('loading','AI 95%');
     state.aiSession=await ort.InferenceSession.create(all.buffer,{executionProviders:['wasm'],graphOptimizationLevel:'all'});
-    state.aiReady=true;
-    setEngineBadge('ai','AI ✓');
+    state.aiReady=true;setEngineBadge('ai','AI ✓');
     toast('LaMa AI ready ✓ (PC photo mode)','success',2500);
-  }catch(e){
-    console.warn('LaMa AI failed:',e.message);
-    setEngineBadge('basic','Basic');
-  }
+  }catch(e){console.warn('LaMa AI failed:',e.message);setEngineBadge('basic','Basic');}
 }
 
 (async function init(){
@@ -290,14 +277,33 @@ async function loadAI(){
   else setEngineBadge('basic','Basic');
 })();
 
-/* ============================================================
-   TABS
-   ============================================================ */
-$$('.tab').forEach((tab)=>{tab.addEventListener('click',()=>{if(tab.classList.contains('active'))return;$$('.tab').forEach((t)=>t.classList.remove('active'));tab.classList.add('active');state.mode=tab.dataset.mode;if(state.mode==='video'){$('#dropTitle').textContent='Drop your video here';$('#dropSub').textContent='or click to browse — MP4, WebM, MOV (max 45 sec)';$('#fileInput').setAttribute('accept','video/*');$('#qualityRow').classList.add('show');$('#promptBox').style.display='block';$('#brushToolsRow').style.display='none';}else{$('#dropTitle').textContent='Drop your photo here';$('#dropSub').textContent='or click to browse — JPG, PNG, WebP';$('#fileInput').setAttribute('accept','image/*');$('#qualityRow').classList.remove('show');$('#promptBox').style.display='none';$('#brushToolsRow').style.display='flex';}});});
+$$('.tab').forEach((tab)=>{
+  tab.addEventListener('click',()=>{
+    if(tab.classList.contains('active'))return;
+    $$('.tab').forEach((t)=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.mode=tab.dataset.mode;
+    if(state.mode==='video'){
+      $('#dropTitle').textContent='Drop your video here';
+      $('#dropSub').textContent='or click to browse — MP4, WebM, MOV (max 45 sec)';
+      $('#fileInput').setAttribute('accept','video/*');
+      $('#qualityRow').classList.add('show');
+      $('#promptBox').style.display='block';
+      $('#brushToolsRow').style.display='none';
+    }else{
+      $('#dropTitle').textContent='Drop your photo here';
+      $('#dropSub').textContent='or click to browse — JPG, PNG, WebP';
+      $('#fileInput').setAttribute('accept','image/*');
+      $('#qualityRow').classList.remove('show');
+      $('#promptBox').style.display='none';
+      $('#brushToolsRow').style.display='flex';
+      $('#canvas').style.display='block';
+      $('#previewVideo').style.display='none';
+      $('#previewVideo').src='';
+    }
+  });
+});
 
-/* ============================================================
-   DROP ZONE
-   ============================================================ */
 const dropZone=$('#dropZone');const fileInput=$('#fileInput');
 ['dragenter','dragover'].forEach((ev)=>{dropZone.addEventListener(ev,(e)=>{e.preventDefault();e.stopPropagation();dropZone.classList.add('drag');});});
 ['dragleave','drop'].forEach((ev)=>{dropZone.addEventListener(ev,(e)=>{e.preventDefault();e.stopPropagation();dropZone.classList.remove('drag');});});
@@ -313,35 +319,59 @@ function handleFile(file){
   if(isVideo)loadVideo(file);else loadImage(file);
 }
 
-function loadImage(file){const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{state.originalImage=img;setupEditor(img.naturalWidth,img.naturalHeight,img);URL.revokeObjectURL(url);$('#editorFileInfo').textContent='Photo · '+img.naturalWidth+'×'+img.naturalHeight;toast('Photo loaded','success');};img.onerror=()=>{toast('Failed to load image','error');URL.revokeObjectURL(url);};img.src=url;}
+function loadImage(file){const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{state.originalImage=img;setupPhotoEditor(img.naturalWidth,img.naturalHeight,img);URL.revokeObjectURL(url);$('#editorFileInfo').textContent='Photo · '+img.naturalWidth+'×'+img.naturalHeight;toast('Photo loaded','success');};img.onerror=()=>{toast('Failed to load image','error');URL.revokeObjectURL(url);};img.src=url;}
 
 function loadVideo(file){
   state.originalVideoFile=file;
   const url=URL.createObjectURL(file);
   const vid=document.createElement('video');
-  vid.muted=true;vid.playsInline=true;vid.preload='auto';vid.crossOrigin='anonymous';
+  vid.muted=true;
+  vid.playsInline=true;
+  vid.preload='auto';
+  vid.crossOrigin='anonymous';
+  vid.src=url;
+
   vid.onloadedmetadata=async()=>{
     state.originalVideo=vid;
-    await seekTo(vid,Math.min(0.1,vid.duration/2));
-    const temp=document.createElement('canvas');
-    temp.width=vid.videoWidth;temp.height=vid.videoHeight;
-    temp.getContext('2d').drawImage(vid,0,0);
-    setupEditor(vid.videoWidth,vid.videoHeight,temp);
-    $('#editorFileInfo').textContent='Video · '+vid.videoWidth+'×'+vid.videoHeight+' · '+vid.duration.toFixed(1)+'s';
-    $('#promptBox').style.display='block';
+    if(!vid.videoWidth||!vid.videoHeight){
+      await new Promise(r=>{
+        const onData=()=>{vid.removeEventListener('loadeddata',onData);r();};
+        vid.addEventListener('loadeddata',onData);
+        setTimeout(r,2500);
+      });
+    }
+    setupVideoEditor(vid,url);
+    $('#editorFileInfo').textContent='Video · '+(vid.videoWidth||'?')+'×'+(vid.videoHeight||'?')+' · '+(vid.duration||0).toFixed(1)+'s';
     toast('Video loaded · describe where the logo is','success',4000);
   };
-  vid.onerror=()=>{toast('Failed to load video','error');URL.revokeObjectURL(url);};
-  vid.src=url;
+
+  vid.onerror=(e)=>{
+    console.error('Video error:',e);
+    toast('Video load failed — codec not supported? Try MP4 (H.264)','error',6000);
+  };
 }
 
-function seekTo(video,time){return new Promise((resolve)=>{const onSeeked=()=>{video.removeEventListener('seeked',onSeeked);resolve();};video.addEventListener('seeked',onSeeked);video.currentTime=time;});}
+function setupVideoEditor(vid,url){
+  $('#editor').classList.add('active');
+  document.body.style.overflow='hidden';
+  $('#canvas').style.display='none';
+  const pv=$('#previewVideo');
+  pv.src=url;
+  pv.style.display='block';
+  pv.load();
+  $('#brushToolsRow').style.display='none';
+  $('#promptBox').style.display='block';
+  $('#qualityRow').classList.add('show');
+  state.originalSourceW=vid.videoWidth||1920;
+  state.originalSourceH=vid.videoHeight||1080;
+  state.workCanvas=null;state.workCtx=null;state.maskCanvas=null;state.maskCtx=null;
+  $('#downloadBar').classList.remove('show');
+}
 
-/* ============================================================
-   EDITOR
-   ============================================================ */
-function setupEditor(w,h,source){
+function setupPhotoEditor(w,h,source){
   $('#editor').classList.add('active');document.body.style.overflow='hidden';
+  $('#previewVideo').style.display='none';$('#previewVideo').src='';
+  $('#canvas').style.display='block';
   const area=$('#canvasArea');const rect=area.getBoundingClientRect();const availW=rect.width-24;const availH=rect.height-24;
   const MAX_RES=1600;let procW=w,procH=h;
   if(Math.max(w,h)>MAX_RES){const scale=MAX_RES/Math.max(w,h);procW=Math.round(w*scale);procH=Math.round(h*scale);}
@@ -350,7 +380,11 @@ function setupEditor(w,h,source){
   const ctx=canvas.getContext('2d',{willReadFrequently:true});state.workCanvas=canvas;state.workCtx=ctx;ctx.drawImage(source,0,0,procW,procH);
   const mc=document.createElement('canvas');mc.width=procW;mc.height=procH;state.maskCanvas=mc;state.maskCtx=mc.getContext('2d',{willReadFrequently:true});
   state.history=[];state.lastPointer=null;state.backupCanvas=null;state.originalSourceW=w;state.originalSourceH=h;state.resultBlob=null;
-  $('#downloadBar').classList.remove('show');attachCanvasEvents();
+  $('#downloadBar').classList.remove('show');
+  $('#promptBox').style.display='none';
+  $('#brushToolsRow').style.display='flex';
+  $('#qualityRow').classList.remove('show');
+  attachCanvasEvents();
 }
 
 function attachCanvasEvents(){
@@ -393,9 +427,6 @@ function showProgress(title,msg){$('#progressTitle').textContent=title;$('#progr
 function setProgress(pct){const c=Math.max(0,Math.min(100,pct));$('#progressFill').style.width=c+'%';$('#progressPct').textContent=Math.round(c)+'%';}
 function hideProgress(){$('#progressFull').classList.remove('show');}
 
-/* ============================================================
-   PROCESS — VIDEO via Magic Hour, PHOTO via LaMa/OpenCV
-   ============================================================ */
 $('#btnProcess').addEventListener('click',async()=>{
   if(state.mode==='video'){await processVideoMagicHour();}
   else{await processPhoto();}
@@ -413,7 +444,6 @@ async function processVideoMagicHour(){
 
   showProgress('Uploading video…','Sending to Magic Hour securely.');
   try{
-    // Step 1: Get upload URL
     setProgress(5);
     const ext=(state.originalVideoFile.name.split('.').pop()||'mp4').toLowerCase();
     const uploadRes=await fetch('https://api.magichour.ai/v1/files/upload-urls',{
@@ -429,18 +459,15 @@ async function processVideoMagicHour(){
     const filePath=item.file_path;
     setProgress(15);
 
-    // Step 2: Upload video
     $('#progressMsg').textContent='Uploading video file…';
     const putRes=await fetch(uploadUrl,{method:'PUT',body:state.originalVideoFile,headers:{'Content-Type':state.originalVideoFile.type||'video/mp4'}});
     if(!putRes.ok)throw new Error('Video upload failed: '+putRes.status);
     setProgress(30);
 
-    // Step 3: Create AI Video Editor job
     $('#progressMsg').textContent='Creating AI job…';
     const dur=Math.min(state.originalVideo.duration||5,45);
     const startSec=0;
     const endSec=Math.min(dur,45);
-    const model='ltx-2.3';
     const createRes=await fetch('https://api.magichour.ai/v1/ai-video-editor',{
       method:'POST',
       headers:{'Authorization':'Bearer '+MAGIC_HOUR_API_KEY,'Content-Type':'application/json','Accept':'application/json'},
@@ -450,7 +477,7 @@ async function processVideoMagicHour(){
         end_seconds:endSec,
         style:{prompt:prompt},
         assets:{video_file_path:filePath},
-        model:model,
+        model:'ltx-2.3',
         resolution:state.quality===1080?'1080p':state.quality===720?'720p':'480p'
       })
     });
@@ -461,7 +488,6 @@ async function processVideoMagicHour(){
     toast('Job started · rendering…','info',4000);
     setProgress(40);
 
-    // Step 4: Poll for completion
     let attempts=0;const maxAttempts=120;let finalUrl=null;
     while(attempts<maxAttempts){
       await new Promise(r=>setTimeout(r,5000));
@@ -484,7 +510,6 @@ async function processVideoMagicHour(){
     }
     if(!finalUrl)throw new Error('Timed out waiting for result');
 
-    // Step 5: Download result
     setProgress(95);
     $('#progressMsg').textContent='Downloading result…';
     const videoRes=await fetch(finalUrl);
@@ -503,7 +528,7 @@ async function processVideoMagicHour(){
 }
 
 /* ============================================================
-   PHOTO PROCESS (LaMa on PC, OpenCV fallback)
+   PHOTO PROCESS
    ============================================================ */
 async function processPhoto(){
   const md=state.maskCtx.getImageData(0,0,state.maskCanvas.width,state.maskCanvas.height).data;let has=false;
@@ -536,7 +561,6 @@ async function processPhoto(){
   }catch(e){console.error(e);hideProgress();toast('Failed: '+(e.message||e),'error');}
 }
 
-/* LaMa inference */
 async function runLaMa(imageData,maskData,w,h){
   const session=state.aiSession;if(!session)throw new Error('No AI session');
   const SIZE=512;
@@ -571,9 +595,6 @@ async function runLaMa(imageData,maskData,w,h){
 
 function inpaintOpenCV(sourceCanvas,maskCanvas,radius){const src=cv.imread(sourceCanvas);const mask=cv.imread(maskCanvas);const srcRgb=new cv.Mat();cv.cvtColor(src,srcRgb,cv.COLOR_RGBA2RGB);const gray=new cv.Mat();cv.cvtColor(mask,gray,cv.COLOR_RGBA2GRAY);cv.threshold(gray,gray,10,255,cv.THRESH_BINARY);const dst=new cv.Mat();cv.inpaint(srcRgb,gray,dst,radius,cv.INPAINT_TELEA);const out=document.createElement('canvas');out.width=sourceCanvas.width;out.height=sourceCanvas.height;cv.imshow(out,dst);src.delete();srcRgb.delete();mask.delete();gray.delete();dst.delete();return out;}
 
-/* ============================================================
-   DOWNLOAD
-   ============================================================ */
 function showDownload(url,filename,label){const bar=$('#downloadBar');bar.innerHTML='';const a=document.createElement('a');a.href=url;a.download=filename;a.className='btn btn-primary';a.style.flex='1';a.style.maxWidth='380px';a.style.justifyContent='center';a.style.textDecoration='none';a.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download '+label;bar.appendChild(a);bar.classList.add('show');}
 
 $('#year').textContent=new Date().getFullYear();
