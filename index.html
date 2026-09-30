@@ -1,209 +1,1417 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="description" content="LogoGone — Remove any logo from photos and videos. Free, private, 4K-ready. Runs 100% in your browser." />
-  <meta name="theme-color" content="#06070d" />
-  <title>LogoGone — Remove any logo. Free. Private. 4K.</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="LogoGone — Remove any logo from photos and videos. Free, private, 4K-ready. Runs 100% in your browser." />
+<meta name="theme-color" content="#06070d" />
+<title>LogoGone — Remove any logo. Free. Private. 4K.</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #06070d;
+  --card: rgba(255,255,255,0.04);
+  --card-hover: rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.18);
+  --text: #eef0f6;
+  --text-dim: #8a90a6;
+  --text-mute: #5a6079;
+  --brand-1: #7c5cff;
+  --brand-2: #4dabff;
+  --brand-3: #ff5cf0;
+  --accent: #6ee7ff;
+  --success: #22d3a0;
+  --danger: #ff5577;
+  --warning: #ffb547;
+  --radius: 18px;
+  --radius-sm: 12px;
+  --shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+body::before {
+  content:'';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 10%, rgba(124,92,255,0.22), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 85% 20%, rgba(77,171,255,0.16), transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(255,92,240,0.10), transparent 60%);
+  animation: mesh 22s ease-in-out infinite alternate;
+}
+@keyframes mesh {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(-3%, -2%) scale(1.05); }
+  100% { transform: translate(2%, 3%) scale(1); }
+}
+.container { max-width: 1180px; margin: 0 auto; padding: 0 22px; }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(6,7,13,0.65);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 22px; max-width: 1180px; margin: 0 auto;
+}
+.logo {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 800; font-size: 19px; letter-spacing: -0.02em;
+  cursor: pointer;
+}
+.logo-icon {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  display: grid; place-items: center;
+  box-shadow: 0 8px 24px rgba(124,92,255,0.4);
+  position: relative; overflow: hidden;
+}
+.logo-icon::after {
+  content:''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.4), transparent 60%);
+  animation: shine 3.5s infinite;
+}
+@keyframes shine {
+  0%   { transform: translateX(-100%) translateY(-100%); }
+  100% { transform: translateX(100%) translateY(100%); }
+}
+.logo-icon svg { width: 18px; height: 18px; position: relative; z-index: 1; }
+.logo-text span {
+  background: linear-gradient(135deg, #fff, #a8b3d0);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.nav-tag {
+  font-size: 11px; padding: 3px 8px; border-radius: 999px;
+  background: linear-gradient(135deg, rgba(34,211,160,0.15), rgba(34,211,160,0.05));
+  border: 1px solid rgba(34,211,160,0.3);
+  color: var(--success); font-weight: 700;
+}
+
+/* HERO */
+.hero { padding: 60px 0 30px; text-align: center; }
+.badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px; border-radius: 999px;
+  background: var(--card); border: 1px solid var(--border);
+  font-size: 12.5px; color: var(--text-dim); margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+}
+.badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--success); box-shadow: 0 0 12px var(--success);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50%     { opacity:0.6; transform:scale(1.4); }
+}
+h1 {
+  font-size: clamp(34px, 6vw, 62px);
+  font-weight: 900; letter-spacing: -0.04em;
+  line-height: 1.05; margin-bottom: 16px;
+}
+.grad-text {
+  background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 50%, var(--brand-3) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  background-size: 200% 200%; animation: gradShift 4s ease infinite;
+}
+@keyframes gradShift {
+  0%,100% { background-position: 0% 50%; }
+  50%     { background-position: 100% 50%; }
+}
+.subtitle {
+  color: var(--text-dim);
+  font-size: clamp(14px, 1.5vw, 17px);
+  max-width: 620px; margin: 0 auto 32px;
+}
+
+/* TABS */
+.tabs {
+  display: inline-flex; gap: 4px; padding: 5px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; margin-bottom: 28px;
+  backdrop-filter: blur(10px);
+}
+.tab {
+  padding: 10px 22px; border-radius: 10px; border: none;
+  background: transparent; color: var(--text-dim);
+  font-family: inherit; font-weight: 600; font-size: 14px;
+  cursor: pointer; transition: all 0.25s;
+  display: flex; align-items: center; gap: 8px;
+}
+.tab.active {
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  color: #fff; box-shadow: 0 6px 20px rgba(124,92,255,0.4);
+}
+
+/* DROP ZONE */
+.drop-zone {
+  max-width: 720px; margin: 0 auto;
+  border: 2px dashed var(--border);
+  border-radius: 24px; padding: 60px 30px;
+  background: var(--card); backdrop-filter: blur(20px);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+}
+.drop-zone:hover, .drop-zone.drag {
+  border-color: var(--brand-1); background: var(--card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 60px rgba(124,92,255,0.2);
+}
+.drop-icon {
+  width: 70px; height: 70px; margin: 0 auto 20px;
+  border-radius: 20px; display: grid; place-items: center;
+  background: linear-gradient(135deg, rgba(124,92,255,0.15), rgba(77,171,255,0.15));
+  border: 1px solid rgba(124,92,255,0.3); color: var(--accent);
+}
+.drop-title { font-size: 20px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+.drop-sub { color: var(--text-dim); font-size: 14px; margin-bottom: 20px; }
+.drop-hint { color: var(--text-mute); font-size: 12px; margin-top: 16px; }
+
+/* BUTTONS */
+.btn {
+  border: none; cursor: pointer; font-family: inherit;
+  font-weight: 600; font-size: 14px; padding: 12px 22px;
+  border-radius: 12px; transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 8px;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  color: #fff; box-shadow: 0 10px 30px rgba(124,92,255,0.35);
+  position: relative; overflow: hidden;
+}
+.btn-primary::before {
+  content:''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent, rgba(255,255,255,0.2), transparent);
+  transform: translateX(-100%); transition: transform 0.6s;
+}
+.btn-primary:hover::before { transform: translateX(100%); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(124,92,255,0.5); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-ghost {
+  background: var(--card); color: var(--text); border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--card-hover); border-color: var(--border-hover); }
+.btn-sm { padding: 8px 14px; font-size: 13px; }
+
+/* EDITOR */
+.editor { max-width: 1100px; margin: 0 auto; }
+.editor-top {
+  display: flex; flex-wrap: wrap; gap: 12px;
+  align-items: center; justify-content: space-between;
+  padding: 14px 18px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 16px;
+  margin-bottom: 16px; backdrop-filter: blur(10px);
+}
+.editor-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.tool-group {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px; background: rgba(0,0,0,0.3);
+  border-radius: 10px; border: 1px solid var(--border);
+}
+.tool-group label { font-size: 12px; color: var(--text-dim); font-weight: 600; }
+.brush-val { font-size: 12px; color: var(--text-mute); min-width: 24px; }
+
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100px; height: 4px;
+  background: var(--border); border-radius: 2px; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  cursor: pointer; box-shadow: 0 2px 8px rgba(124,92,255,0.5);
+}
+
+.canvas-wrap {
+  position: relative;
+  border-radius: 18px; overflow: hidden;
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  min-height: 300px;
+  box-shadow: var(--shadow);
+  background-image:
+    linear-gradient(45deg, #1a1c24 25%, transparent 25%),
+    linear-gradient(-45deg, #1a1c24 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #1a1c24 75%),
+    linear-gradient(-45deg, transparent 75%, #1a1c24 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  background-color: #0b0d18;
+}
+#canvas {
+  display: block;
+  max-width: 100%;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.magnifier {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 3px solid var(--brand-1);
+  background: #000;
+  overflow: hidden;
+  pointer-events: none;
+  display: none;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  z-index: 20;
+}
+#magnifierCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.canvas-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  opacity: 0; transition: opacity 0.3s;
+}
+.canvas-overlay.show { opacity: 1; }
+.overlay-text {
+  color: #fff; margin-top: 16px; font-size: 14px; font-weight: 600;
+}
+
+.spinner {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.15);
+  border-top-color: var(--brand-2);
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.editor-actions {
+  display: flex; flex-wrap: wrap; gap: 10px;
+  justify-content: center; margin-top: 18px;
+}
+
+/* PROGRESS */
+.progress-card {
+  max-width: 600px; margin: 20px auto 0;
+  padding: 20px; background: var(--card);
+  border: 1px solid var(--border); border-radius: 16px;
+  backdrop-filter: blur(10px);
+}
+.progress-head {
+  display: flex; justify-content: space-between;
+  margin-bottom: 10px; font-size: 14px; font-weight: 600;
+}
+.progress-head .pct { color: var(--accent); }
+.progress-bar {
+  height: 8px; background: rgba(0,0,0,0.4);
+  border-radius: 4px; overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-1), var(--brand-2), var(--accent));
+  border-radius: 4px; transition: width 0.3s; width: 0%;
+  background-size: 200% 100%;
+  animation: progAnim 2s linear infinite;
+}
+@keyframes progAnim {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+.progress-sub {
+  color: var(--text-mute); font-size: 12px;
+  margin-top: 10px; text-align: center;
+}
+
+/* QUALITY */
+.quality-picker {
+  display: flex; gap: 8px; justify-content: center;
+  flex-wrap: wrap; margin: 16px 0;
+}
+.q-btn {
+  padding: 10px 18px; border-radius: 12px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text-dim); font-family: inherit; font-weight: 600;
+  font-size: 13px; cursor: pointer; transition: all 0.2s;
+  display: flex; align-items: center; gap: 8px;
+}
+.q-btn:hover { border-color: var(--border-hover); color: var(--text); }
+.q-btn.active {
+  background: linear-gradient(135deg, rgba(124,92,255,0.2), rgba(77,171,255,0.2));
+  border-color: var(--brand-1); color: var(--text);
+}
+.q-btn small { color: var(--text-mute); font-weight: 500; font-size: 11px; }
+
+/* SECTIONS */
+section { padding: 50px 0; }
+.section-head { margin-bottom: 24px; }
+.section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+.section-sub { color: var(--text-dim); font-size: 14px; }
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.feature {
+  padding: 22px; background: var(--card);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  transition: all 0.3s; backdrop-filter: blur(10px);
+}
+.feature:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-hover);
+  background: var(--card-hover);
+}
+.feature-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  display: grid; place-items: center; margin-bottom: 14px;
+  background: linear-gradient(135deg, rgba(124,92,255,0.15), rgba(77,171,255,0.15));
+  border: 1px solid rgba(124,92,255,0.25); color: var(--accent);
+}
+.feature h3 { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+.feature p { color: var(--text-dim); font-size: 13px; line-height: 1.6; }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 30px 0; margin-top: 40px;
+  color: var(--text-mute); font-size: 13px;
+}
+.footer-inner {
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 14px;
+}
+.footer-note { opacity: 0.6; }
+.footer-brand {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-transform: uppercase;
+}
+
+/* TOAST */
+.toast-wrap {
+  position: fixed; bottom: 22px; right: 22px; z-index: 300;
+  display: flex; flex-direction: column; gap: 10px;
+  pointer-events: none;
+}
+.toast {
+  background: linear-gradient(135deg, #14172a, #0e1020);
+  border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 13px 17px; color: var(--text);
+  font-size: 13.5px; font-weight: 500;
+  box-shadow: var(--shadow);
+  display: flex; align-items: center; gap: 10px;
+  min-width: 240px; max-width: 360px;
+  animation: toastIn 0.4s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: auto;
+  backdrop-filter: blur(20px);
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.toast.out { animation: toastOut 0.4s forwards; }
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(120%); }
+}
+.toast-icon {
+  flex-shrink: 0; width: 18px; height: 18px;
+  display: grid; place-items: center;
+}
+.toast.success .toast-icon { color: var(--success); }
+.toast.error   .toast-icon { color: var(--danger); }
+.toast.info    .toast-icon { color: var(--brand-2); }
+.toast.warning .toast-icon { color: var(--warning); }
+
+/* LOADER */
+.loader-full {
+  position: fixed; inset: 0; z-index: 400;
+  background: rgba(6,7,13,0.95);
+  backdrop-filter: blur(10px);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 20px; opacity: 0; pointer-events: none;
+  transition: opacity 0.4s;
+}
+.loader-full.show { opacity: 1; pointer-events: auto; }
+.loader-full .spinner { width: 56px; height: 56px; border-width: 4px; }
+.loader-text { color: var(--text-dim); font-size: 14px; font-weight: 500; }
+
+/* DOWNLOAD */
+.download-wrap {
+  display: flex; justify-content: center;
+  margin-top: 22px; gap: 12px; flex-wrap: wrap;
+}
+.download-wrap a { text-decoration: none; }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .container { padding: 0 14px; }
+  .hero { padding: 40px 0 20px; }
+  .drop-zone { padding: 40px 20px; }
+  .editor-top { padding: 12px; }
+  .tool-group { padding: 5px 10px; }
+  input[type=range] { width: 70px; }
+  #canvas { max-height: 50vh; }
+  .tabs { width: 100%; }
+  .tab { flex: 1; justify-content: center; padding: 10px 12px; font-size: 13px; }
+  .toast-wrap { left: 14px; right: 14px; bottom: 14px; }
+  .toast { min-width: 0; }
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb {
+  background: #1e2235; border-radius: 5px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover { background: #2a3050; }
+</style>
 </head>
 <body>
 
-  <div class="loader-full show" id="cvLoader">
-    <div class="spinner"></div>
-    <div class="loader-text" id="cvLoaderText">Loading AI engine… (first time only)</div>
+<div class="loader-full show" id="cvLoader">
+  <div class="spinner"></div>
+  <div class="loader-text" id="cvLoaderText">Loading AI engine… (first time only)</div>
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo" id="logoBtn">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <div class="logo-text"><span>LogoGone</span></div>
+      <span class="nav-tag">FREE</span>
+    </div>
   </div>
+</nav>
 
-  <nav>
-    <div class="nav-inner">
-      <div class="logo" id="logoBtn">
-        <div class="logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-            <path d="M2 17l10 5 10-5"/>
-            <path d="M2 12l10 5 10-5"/>
-          </svg>
+<main class="container">
+
+  <section class="hero" id="uploadSection">
+    <div class="badge"><span class="badge-dot"></span> 100% browser-based · No upload · No server · Free forever</div>
+    <h1>Remove any <span class="grad-text">logo</span>.<br>Keep the quality.</h1>
+    <p class="subtitle">Photos and videos. Up to 4K. Brush over the logo — our engine fills it perfectly. Nothing leaves your device.</p>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-mode="photo" role="tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+        </svg>
+        Photo
+      </button>
+      <button class="tab" data-mode="video" role="tab">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+        </svg>
+        Video
+      </button>
+    </div>
+
+    <div class="drop-zone" id="dropZone">
+      <div class="drop-icon">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      <div class="drop-title" id="dropTitle">Drop your photo here</div>
+      <div class="drop-sub" id="dropSub">or click to browse — JPG, PNG, WebP, HEIC</div>
+      <button class="btn btn-primary" type="button" id="chooseBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+        </svg>
+        Choose file
+      </button>
+      <div class="drop-hint">🔒 Files never leave your browser</div>
+      <input type="file" id="fileInput" accept="image/*" hidden />
+    </div>
+  </section>
+
+  <section class="editor" id="editorSection" style="display:none;">
+    <div class="editor-top">
+      <div class="editor-tools">
+        <div class="tool-group">
+          <label>Brush</label>
+          <input type="range" id="brushSize" min="5" max="120" value="30" />
+          <span id="brushVal" class="brush-val">30</span>
         </div>
-        <div class="logo-text"><span>LogoGone</span></div>
-        <span class="nav-tag">FREE</span>
+        <div class="tool-group">
+          <label>Mode</label>
+          <button class="btn btn-ghost btn-sm" id="modePaint" title="Paint to mark logo">✏️ Mark</button>
+          <button class="btn btn-ghost btn-sm" id="modeErase" title="Erase mark">🧽 Erase</button>
+        </div>
+      </div>
+      <div class="editor-tools">
+        <button class="btn btn-ghost btn-sm" id="btnUndo">↶ Undo</button>
+        <button class="btn btn-ghost btn-sm" id="btnClear">Clear</button>
+        <button class="btn btn-ghost btn-sm" id="btnNew">New file</button>
       </div>
     </div>
-  </nav>
 
-  <main class="container">
-
-    <section class="hero" id="uploadSection">
-      <div class="badge"><span class="badge-dot"></span> 100% browser-based · No upload · No server · Free forever</div>
-      <h1>Remove any <span class="grad-text">logo</span>.<br>Keep the quality.</h1>
-      <p class="subtitle">Photos and videos. Up to 4K. Brush over the logo — our engine fills it perfectly. Nothing leaves your device.</p>
-
-      <div class="tabs" role="tablist">
-        <button class="tab active" data-mode="photo" role="tab">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
-          </svg>
-          Photo
-        </button>
-        <button class="tab" data-mode="video" role="tab">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
-          </svg>
-          Video
-        </button>
-      </div>
-
-      <div class="drop-zone" id="dropZone">
-        <div class="drop-icon">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
-          </svg>
-        </div>
-        <div class="drop-title" id="dropTitle">Drop your photo here</div>
-        <div class="drop-sub" id="dropSub">or click to browse — JPG, PNG, WebP, HEIC</div>
-        <button class="btn btn-primary" type="button" id="chooseBtn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-          </svg>
-          Choose file
-        </button>
-        <div class="drop-hint">🔒 Files never leave your browser</div>
-        <input type="file" id="fileInput" accept="image/*" hidden />
-      </div>
-    </section>
-
-    <section class="editor" id="editorSection" style="display:none;">
-      <div class="editor-top">
-        <div class="editor-tools">
-          <div class="tool-group">
-            <label>Brush</label>
-            <input type="range" id="brushSize" min="5" max="120" value="30" />
-            <span id="brushVal" class="brush-val">30</span>
-          </div>
-          <div class="tool-group">
-            <label>Mode</label>
-            <button class="btn btn-ghost btn-sm" id="modePaint" title="Paint to mark logo">✏️ Mark</button>
-            <button class="btn btn-ghost btn-sm" id="modeErase" title="Erase mark">🧽 Erase</button>
-          </div>
-        </div>
-        <div class="editor-tools">
-          <button class="btn btn-ghost btn-sm" id="btnUndo">↶ Undo</button>
-          <button class="btn btn-ghost btn-sm" id="btnClear">Clear</button>
-          <button class="btn btn-ghost btn-sm" id="btnNew">New file</button>
-        </div>
-      </div>
-
-      <div class="quality-picker" id="qualityPicker">
-        <button class="q-btn" data-q="480">⚡ 480p <small>fastest</small></button>
-        <button class="q-btn" data-q="720">⚡ 720p <small>fast</small></button>
-        <button class="q-btn active" data-q="1080">⚖️ 1080p <small>balanced</small></button>
-        <button class="q-btn" data-q="2160">🎯 4K <small>max</small></button>
-        <button class="q-btn" data-q="0">💎 Original <small>no resize</small></button>
-      </div>
-      <div class="progress-sub" id="qualityHint">1080p recommended for most use. 4K takes longer but keeps full resolution.</div>
-
-      <div class="canvas-wrap" id="canvasWrap">
-        <canvas id="canvas"></canvas>
-        <div class="magnifier" id="magnifier">
-          <canvas id="magnifierCanvas"></canvas>
-        </div>
-        <div class="canvas-overlay" id="canvasOverlay">
-          <div class="spinner"></div>
-          <div class="overlay-text" id="overlayText">Processing…</div>
-        </div>
-      </div>
-
-      <div class="editor-actions">
-        <button class="btn btn-primary" id="btnProcess">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-          </svg>
-          Remove logo
-        </button>
-        <button class="btn btn-ghost" id="btnPreview">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
-          </svg>
-          Before / After
-        </button>
-      </div>
-
-      <div class="progress-card" id="progressCard" style="display:none;">
-        <div class="progress-head">
-          <span id="progressLabel">Processing…</span>
-          <span class="pct" id="progressPct">0%</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-        <div class="progress-sub" id="progressSub">Please keep this tab open</div>
-      </div>
-
-      <div class="download-wrap" id="downloadWrap"></div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <div class="section-title">Why LogoGone</div>
-        <div class="section-sub">Built for real use — free, private, high quality.</div>
-      </div>
-      <div class="features">
-        <div class="feature">
-          <div class="feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-          </div>
-          <h3>100% private</h3>
-          <p>Files never leave your device. Everything runs inside your browser.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
-            </svg>
-          </div>
-          <h3>4K ready</h3>
-          <p>Input 4K, output 4K. High bitrate output, no forced downscale.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-            </svg>
-          </div>
-          <h3>Fast inpainting</h3>
-          <p>OpenCV Telea + Navier-Stokes — fills marked areas seamlessly.</p>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-            </svg>
-          </div>
-          <h3>Always free</h3>
-          <p>No signup. No credits. No limits. Works offline after first load.</p>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <div class="container footer-inner">
-      <div>© <span id="year"></span> LogoGone · Remove logos. Keep quality.</div>
-      <div class="footer-note">Powered by OpenCV.js · Runs offline</div>
+    <div class="quality-picker" id="qualityPicker">
+      <button class="q-btn" data-q="480">⚡ 480p <small>fastest</small></button>
+      <button class="q-btn" data-q="720">⚡ 720p <small>fast</small></button>
+      <button class="q-btn active" data-q="1080">⚖️ 1080p <small>balanced</small></button>
+      <button class="q-btn" data-q="2160">🎯 4K <small>max</small></button>
+      <button class="q-btn" data-q="0">💎 Original <small>no resize</small></button>
     </div>
-    <div class="container">
-      <div class="footer-brand">Made in Bharat, Crafted by Anubhav Verma</div>
+    <div class="progress-sub" id="qualityHint">1080p recommended for most use. 4K takes longer but keeps full resolution.</div>
+
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="canvas"></canvas>
+      <div class="magnifier" id="magnifier">
+        <canvas id="magnifierCanvas"></canvas>
+      </div>
+      <div class="canvas-overlay" id="canvasOverlay">
+        <div class="spinner"></div>
+        <div class="overlay-text" id="overlayText">Processing…</div>
+      </div>
     </div>
-  </footer>
 
-  <div class="toast-wrap" id="toastWrap"></div>
+    <div class="editor-actions">
+      <button class="btn btn-primary" id="btnProcess">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        Remove logo
+      </button>
+      <button class="btn btn-ghost" id="btnPreview">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+        </svg>
+        Before / After
+      </button>
+    </div>
 
-  <script src="app.js"></script>
+    <div class="progress-card" id="progressCard" style="display:none;">
+      <div class="progress-head">
+        <span id="progressLabel">Processing…</span>
+        <span class="pct" id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-sub" id="progressSub">Please keep this tab open</div>
+    </div>
+
+    <div class="download-wrap" id="downloadWrap"></div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="section-title">Why LogoGone</div>
+      <div class="section-sub">Built for real use — free, private, high quality.</div>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h3>100% private</h3>
+        <p>Files never leave your device. Everything runs inside your browser.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+          </svg>
+        </div>
+        <h3>4K ready</h3>
+        <p>Input 4K, output 4K. High bitrate output, no forced downscale.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+          </svg>
+        </div>
+        <h3>Fast inpainting</h3>
+        <p>OpenCV Telea + Navier-Stokes — fills marked areas seamlessly.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3>Always free</h3>
+        <p>No signup. No credits. No limits. Works offline after first load.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <div>© <span id="year"></span> LogoGone · Remove logos. Keep quality.</div>
+    <div class="footer-note">Powered by OpenCV.js · Runs offline</div>
+  </div>
+  <div class="container">
+    <div class="footer-brand">Made in Bharat, Crafted by Anubhav Verma</div>
+  </div>
+</footer>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+'use strict';
+
+const $  = (s) => document.querySelector(s);
+const $$ = (s) => document.querySelectorAll(s);
+
+function toast(msg, type = 'info', ms = 3200) {
+  const wrap = $('#toastWrap');
+  const el = document.createElement('div');
+  el.className = 'toast ' + type;
+  const icons = {
+    success: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    error:   '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+    info:    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+    warning: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+  };
+  el.innerHTML = '<div class="toast-icon">' + (icons[type] || icons.info) + '</div><div>' + msg + '</div>';
+  wrap.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('out');
+    setTimeout(() => el.remove(), 400);
+  }, ms);
+}
+
+const state = {
+  mode: 'photo',
+  originalImage: null,
+  originalVideo: null,
+  workCanvas: null,
+  workCtx: null,
+  maskCanvas: null,
+  maskCtx: null,
+  backupCanvas: null,
+  history: [],
+  painting: false,
+  brushSize: 30,
+  tool: 'paint',
+  quality: 1080,
+  lastPointer: null,
+  resultBlob: null,
+  cvReady: false,
+  originalSourceW: 0,
+  originalSourceH: 0
+};
+
+function loadOpenCV() {
+  return new Promise((resolve, reject) => {
+    if (window.cv && window.cv.Mat) return resolve();
+    const script = document.createElement('script');
+    script.src = 'https://docs.opencv.org/4.8.0/opencv.js';
+    script.async = true;
+    script.onload = () => {
+      if (window.cv && window.cv.Mat) return resolve();
+      if (window.cv) {
+        window.cv['onRuntimeInitialized'] = () => resolve();
+      } else {
+        reject(new Error('OpenCV failed to load'));
+      }
+    };
+    script.onerror = () => reject(new Error('OpenCV script failed'));
+    document.head.appendChild(script);
+  });
+}
+
+(async function initCV() {
+  const loader = $('#cvLoader');
+  const loaderText = $('#cvLoaderText');
+  try {
+    loaderText.textContent = 'Loading AI engine… (first time only)';
+    await loadOpenCV();
+    state.cvReady = true;
+    loader.classList.remove('show');
+    toast('Engine ready ✓', 'success', 2000);
+  } catch (e) {
+    loaderText.textContent = 'Failed to load engine. Check internet.';
+    toast('Engine failed to load', 'error', 5000);
+    console.error(e);
+  }
+})();
+
+$$('.tab').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    if (tab.classList.contains('active')) return;
+    $$('.tab').forEach((t) => t.classList.remove('active'));
+    tab.classList.add('active');
+    state.mode = tab.dataset.mode;
+    if (state.mode === 'photo') {
+      $('#dropTitle').textContent = 'Drop your photo here';
+      $('#dropSub').textContent = 'or click to browse — JPG, PNG, WebP, HEIC';
+      $('#fileInput').setAttribute('accept', 'image/*');
+    } else {
+      $('#dropTitle').textContent = 'Drop your video here';
+      $('#dropSub').textContent = 'or click to browse — MP4, WebM, MOV (short clips work best)';
+      $('#fileInput').setAttribute('accept', 'video/*');
+    }
+  });
+});
+
+const dropZone = $('#dropZone');
+const fileInput = $('#fileInput');
+
+['dragenter', 'dragover'].forEach((ev) => {
+  dropZone.addEventListener(ev, (e) => {
+    e.preventDefault(); e.stopPropagation();
+    dropZone.classList.add('drag');
+  });
+});
+['dragleave', 'drop'].forEach((ev) => {
+  dropZone.addEventListener(ev, (e) => {
+    e.preventDefault(); e.stopPropagation();
+    dropZone.classList.remove('drag');
+  });
+});
+dropZone.addEventListener('drop', (e) => {
+  const f = e.dataTransfer.files[0];
+  if (f) handleFile(f);
+});
+dropZone.addEventListener('click', (e) => {
+  if (e.target.closest('#chooseBtn')) return;
+  fileInput.click();
+});
+$('#chooseBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  fileInput.click();
+});
+fileInput.addEventListener('change', (e) => {
+  const f = e.target.files[0];
+  if (f) handleFile(f);
+  fileInput.value = '';
+});
+
+function handleFile(file) {
+  if (!state.cvReady) { toast('Engine still loading, wait a moment…', 'warning'); return; }
+  const isImage = file.type.startsWith('image/');
+  const isVideo = file.type.startsWith('video/');
+  if (state.mode === 'photo' && !isImage) { toast('Please drop an image file', 'error'); return; }
+  if (state.mode === 'video' && !isVideo) { toast('Please drop a video file', 'error'); return; }
+  if (isImage) loadImage(file);
+  else loadVideo(file);
+}
+
+function loadImage(file) {
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    state.originalImage = img;
+    setupEditor(img.naturalWidth, img.naturalHeight, img);
+    URL.revokeObjectURL(url);
+    toast(`Photo loaded · ${img.naturalWidth}×${img.naturalHeight}`, 'success');
+  };
+  img.onerror = () => { toast('Failed to load image', 'error'); URL.revokeObjectURL(url); };
+  img.src = url;
+}
+
+function loadVideo(file) {
+  const url = URL.createObjectURL(file);
+  const vid = document.createElement('video');
+  vid.muted = true;
+  vid.playsInline = true;
+  vid.preload = 'auto';
+  vid.crossOrigin = 'anonymous';
+  vid.onloadedmetadata = async () => {
+    state.originalVideo = vid;
+    await seekTo(vid, Math.min(0.1, vid.duration / 2));
+    const temp = document.createElement('canvas');
+    temp.width = vid.videoWidth; temp.height = vid.videoHeight;
+    temp.getContext('2d').drawImage(vid, 0, 0);
+    setupEditor(vid.videoWidth, vid.videoHeight, temp);
+    toast(`Video loaded · ${vid.videoWidth}×${vid.videoHeight} · ${vid.duration.toFixed(1)}s`, 'success');
+    if (vid.duration > 30) toast('Tip: short clips (≤30s) process much faster', 'warning', 5000);
+  };
+  vid.onerror = () => { toast('Failed to load video', 'error'); URL.revokeObjectURL(url); };
+  vid.src = url;
+}
+
+function seekTo(video, time) {
+  return new Promise((resolve) => {
+    const onSeeked = () => { video.removeEventListener('seeked', onSeeked); resolve(); };
+    video.addEventListener('seeked', onSeeked);
+    video.currentTime = time;
+  });
+}
+
+function setupEditor(w, h, source) {
+  $('#uploadSection').style.display = 'none';
+  $('#editorSection').style.display = 'block';
+  scrollTo({ top: 0, behavior: 'smooth' });
+
+  const maxW = Math.min(window.innerWidth - 40, 1100);
+  const maxH = window.innerHeight * 0.65;
+
+  const MAX_RES = 1600;
+  let procW = w, procH = h;
+  if (Math.max(w, h) > MAX_RES) {
+    const scale = MAX_RES / Math.max(w, h);
+    procW = Math.round(w * scale);
+    procH = Math.round(h * scale);
+  }
+
+  const canvas = $('#canvas');
+  canvas.width = procW;
+  canvas.height = procH;
+
+  const ratio = Math.min(maxW / procW, maxH / procH, 1);
+  const dispW = Math.round(procW * ratio);
+  const dispH = Math.round(procH * ratio);
+  canvas.style.width = dispW + 'px';
+  canvas.style.height = dispH + 'px';
+
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  state.workCanvas = canvas;
+  state.workCtx = ctx;
+  ctx.drawImage(source, 0, 0, procW, procH);
+
+  const mc = document.createElement('canvas');
+  mc.width = procW; mc.height = procH;
+  state.maskCanvas = mc;
+  state.maskCtx = mc.getContext('2d', { willReadFrequently: true });
+
+  state.history = [];
+  state.lastPointer = null;
+  state.backupCanvas = null;
+  state.originalSourceW = w;
+  state.originalSourceH = h;
+
+  attachCanvasEvents();
+  updateDownloadUI(null);
+  $('#progressCard').style.display = 'none';
+}
+
+function attachCanvasEvents() {
+  const c = state.workCanvas;
+  if (!c || c.dataset.bound) return;
+  c.dataset.bound = '1';
+
+  const mag = $('#magnifier');
+  const magCanvas = $('#magnifierCanvas');
+  magCanvas.width = 130;
+  magCanvas.height = 130;
+  const magCtx = magCanvas.getContext('2d');
+
+  const getPos = (e) => {
+    const rect = c.getBoundingClientRect();
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+    const scaleX = c.width / rect.width;
+    const scaleY = c.height / rect.height;
+    return {
+      x: cx * scaleX,
+      y: cy * scaleY,
+      clientX: e.touches ? e.touches[0].clientX : e.clientX,
+      clientY: e.touches ? e.touches[0].clientY : e.clientY
+    };
+  };
+
+  const updateMagnifier = (p) => {
+    const wrapRect = c.parentElement.getBoundingClientRect();
+    let magLeft = p.clientX - wrapRect.left + 20;
+    if (magLeft + 130 > wrapRect.width) magLeft = magLeft - 170;
+    let magTop = p.clientY - wrapRect.top - 150;
+    if (magTop < 0) magTop = magTop + 170;
+
+    mag.style.left = magLeft + 'px';
+    mag.style.top = magTop + 'px';
+
+    const zoom = 3;
+    const size = 130 / zoom;
+    magCtx.clearRect(0, 0, 130, 130);
+    magCtx.drawImage(state.workCanvas,
+      (p.x - size / 2), (p.y - size / 2), size, size,
+      0, 0, 130, 130
+    );
+  };
+
+  const start = (e) => {
+    e.preventDefault();
+    state.painting = true;
+    pushHistory();
+    const p = getPos(e);
+    state.lastPointer = p;
+    drawMark(p, p);
+    mag.style.display = 'block';
+    updateMagnifier(p);
+  };
+  const move = (e) => {
+    if (!state.painting) return;
+    e.preventDefault();
+    const p = getPos(e);
+    drawMark(state.lastPointer, p);
+    state.lastPointer = p;
+    updateMagnifier(p);
+  };
+  const end = () => {
+    if (!state.painting) return;
+    state.painting = false;
+    state.lastPointer = null;
+    mag.style.display = 'none';
+  };
+
+  c.addEventListener('mousedown', start);
+  c.addEventListener('mousemove', move);
+  c.addEventListener('mouseup', end);
+  c.addEventListener('mouseleave', end);
+  c.addEventListener('touchstart', start, { passive: false });
+  c.addEventListener('touchmove', move, { passive: false });
+  c.addEventListener('touchend', end);
+  c.addEventListener('touchcancel', end);
+}
+
+function drawMark(from, to) {
+  const ctx  = state.workCtx;
+  const mctx = state.maskCtx;
+  const size = state.brushSize;
+
+  if (!state.backupCanvas) {
+    const bc = document.createElement('canvas');
+    bc.width = state.workCanvas.width;
+    bc.height = state.workCanvas.height;
+    state.backupCanvas = bc;
+    state.backupCanvas.getContext('2d', { willReadFrequently: true }).drawImage(state.workCanvas, 0, 0);
+  }
+
+  if (state.tool === 'paint') {
+    mctx.save();
+    mctx.strokeStyle = '#ffffff';
+    mctx.fillStyle = '#ffffff';
+    mctx.lineWidth = size;
+    mctx.lineCap = 'round';
+    mctx.lineJoin = 'round';
+    mctx.beginPath();
+    mctx.moveTo(from.x, from.y);
+    mctx.lineTo(to.x, to.y);
+    mctx.stroke();
+    mctx.beginPath();
+    mctx.arc(to.x, to.y, size / 2, 0, Math.PI * 2);
+    mctx.fill();
+    mctx.restore();
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(124,92,255,0.3)';
+    ctx.fillStyle = 'rgba(124,92,255,0.3)';
+    ctx.lineWidth = size;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(from.x, from.y);
+    ctx.lineTo(to.x, to.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(to.x, to.y, size / 2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  } else {
+    mctx.save();
+    mctx.globalCompositeOperation = 'destination-out';
+    mctx.strokeStyle = '#000';
+    mctx.fillStyle = '#000';
+    mctx.lineWidth = size;
+    mctx.lineCap = 'round';
+    mctx.lineJoin = 'round';
+    mctx.beginPath();
+    mctx.moveTo(from.x, from.y);
+    mctx.lineTo(to.x, to.y);
+    mctx.stroke();
+    mctx.beginPath();
+    mctx.arc(to.x, to.y, size / 2, 0, Math.PI * 2);
+    mctx.fill();
+    mctx.restore();
+
+    const dist = Math.hypot(to.x - from.x, to.y - from.y);
+    const steps = Math.max(1, Math.floor(dist / (size / 3)));
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const px = from.x + (to.x - from.x) * t;
+      const py = from.y + (to.y - from.y) * t;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(px, py, size / 2, 0, Math.PI * 2);
+      ctx.clip();
+      ctx.drawImage(state.backupCanvas, 0, 0);
+      ctx.restore();
+    }
+  }
+}
+
+function pushHistory() {
+  try {
+    const snap = document.createElement('canvas');
+    snap.width = state.maskCanvas.width;
+    snap.height = state.maskCanvas.height;
+    snap.getContext('2d').drawImage(state.maskCanvas, 0, 0);
+
+    const vis = document.createElement('canvas');
+    vis.width = state.workCanvas.width;
+    vis.height = state.workCanvas.height;
+    vis.getContext('2d').drawImage(state.workCanvas, 0, 0);
+
+    state.history.push({ mask: snap, visible: vis });
+    if (state.history.length > 30) state.history.shift();
+  } catch (e) {}
+}
+
+$('#btnUndo').addEventListener('click', () => {
+  if (!state.history.length) { toast('Nothing to undo', 'info'); return; }
+  const last = state.history.pop();
+  state.maskCtx.clearRect(0, 0, state.maskCanvas.width, state.maskCanvas.height);
+  state.maskCtx.drawImage(last.mask, 0, 0);
+  state.workCtx.clearRect(0, 0, state.workCanvas.width, state.workCanvas.height);
+  state.workCtx.drawImage(last.visible, 0, 0);
+  state.backupCanvas = null;
+});
+
+$('#btnClear').addEventListener('click', () => {
+  pushHistory();
+  state.maskCtx.clearRect(0, 0, state.maskCanvas.width, state.maskCanvas.height);
+  redrawSource();
+  state.backupCanvas = null;
+});
+
+$('#btnNew').addEventListener('click', () => location.reload());
+
+function redrawSource() {
+  const src = state.mode === 'photo' ? state.originalImage : state.originalVideo;
+  if (!src) return;
+  state.workCtx.clearRect(0, 0, state.workCanvas.width, state.workCanvas.height);
+  state.workCtx.drawImage(src, 0, 0, state.workCanvas.width, state.workCanvas.height);
+}
+
+$('#brushSize').addEventListener('input', (e) => {
+  state.brushSize = +e.target.value;
+  $('#brushVal').textContent = state.brushSize;
+});
+
+$('#modePaint').addEventListener('click', () => {
+  state.tool = 'paint';
+  $('#modePaint').style.background = 'linear-gradient(135deg, rgba(124,92,255,0.3), rgba(77,171,255,0.3))';
+  $('#modeErase').style.background = '';
+});
+
+$('#modeErase').addEventListener('click', () => {
+  state.tool = 'erase';
+  $('#modeErase').style.background = 'linear-gradient(135deg, rgba(124,92,255,0.3), rgba(77,171,255,0.3))';
+  $('#modePaint').style.background = '';
+});
+
+$$('.q-btn').forEach((b) => {
+  b.addEventListener('click', () => {
+    $$('.q-btn').forEach((x) => x.classList.remove('active'));
+    b.classList.add('active');
+    state.quality = +b.dataset.q;
+    const hints = {
+      480:  '480p — fastest, lowest quality. Good for testing.',
+      720:  '720p — fast, decent quality.',
+      1080: '1080p — recommended. Best balance of speed and quality.',
+      2160: '4K — slowest. Keeps full 4K resolution. May take minutes on long clips.',
+      0:    'Original — keeps source resolution exactly as it is.'
+    };
+    $('#qualityHint').textContent = hints[state.quality];
+  });
+});
+
+$('#btnProcess').addEventListener('click', async () => {
+  if (!state.cvReady) { toast('Engine still loading…', 'warning'); return; }
+
+  const maskData = state.maskCtx.getImageData(0, 0, state.maskCanvas.width, state.maskCanvas.height).data;
+  let hasMark = false;
+  for (let i = 3; i < maskData.length; i += 4) {
+    if (maskData[i] > 10) { hasMark = true; break; }
+  }
+  if (!hasMark) { toast('Brush over the logo first ✏️', 'warning'); return; }
+
+  if (state.mode === 'photo') await processPhoto();
+  else await processVideo();
+});
+
+async function processPhoto() {
+  showOverlay('Removing logo…');
+  try {
+    await new Promise((r) => setTimeout(r, 50));
+    const resultCanvas = inpaintCanvas(state.workCanvas, state.maskCanvas, 5);
+
+    state.workCtx.clearRect(0, 0, state.workCanvas.width, state.workCanvas.height);
+    state.workCtx.drawImage(resultCanvas, 0, 0);
+    state.backupCanvas = null;
+
+    const outCanvas = document.createElement('canvas');
+    outCanvas.width = state.originalSourceW;
+    outCanvas.height = state.originalSourceH;
+    const octx = outCanvas.getContext('2d');
+    octx.imageSmoothingEnabled = true;
+    octx.imageSmoothingQuality = 'high';
+    octx.drawImage(resultCanvas, 0, 0, outCanvas.width, outCanvas.height);
+
+    outCanvas.toBlob((blob) => {
+      state.resultBlob = blob;
+      const url = URL.createObjectURL(blob);
+      updateDownloadUI(url, 'logoGone.png');
+      toast('Logo removed ✓', 'success');
+    }, 'image/png');
+
+    hideOverlay();
+  } catch (e) {
+    console.error(e);
+    hideOverlay();
+    toast('Processing failed: ' + (e.message || e), 'error');
+  }
+}
+
+function inpaintCanvas(sourceCanvas, maskCanvas, radius = 5) {
+  const src  = cv.imread(sourceCanvas);
+  const mask = cv.imread(maskCanvas);
+
+  const srcRgb = new cv.Mat();
+  cv.cvtColor(src, srcRgb, cv.COLOR_RGBA2RGB);
+
+  const gray = new cv.Mat();
+  cv.cvtColor(mask, gray, cv.COLOR_RGBA2GRAY);
+  cv.threshold(gray, gray, 10, 255, cv.THRESH_BINARY);
+
+  const dst = new cv.Mat();
+  cv.inpaint(srcRgb, gray, dst, radius, cv.INPAINT_TELEA);
+
+  const out = document.createElement('canvas');
+  out.width = sourceCanvas.width;
+  out.height = sourceCanvas.height;
+  cv.imshow(out, dst);
+
+  src.delete(); srcRgb.delete(); mask.delete(); gray.delete(); dst.delete();
+  return out;
+}
+
+async function processVideo() {
+  const vid = state.originalVideo;
+  if (!vid) return;
+
+  showOverlay('Preparing video…');
+  try {
+    await new Promise((r) => setTimeout(r, 50));
+
+    const srcW = state.originalSourceW;
+    const srcH = state.originalSourceH;
+    let targetW = srcW, targetH = srcH;
+
+    if (state.quality !== 0) {
+      const scale = state.quality / srcH;
+      if (scale < 1) {
+        targetW = Math.round(srcW * scale);
+        targetH = Math.round(srcH * scale);
+        targetW += targetW % 2;
+        targetH += targetH % 2;
+      }
+    }
+
+    const outCanvas = document.createElement('canvas');
+    outCanvas.width = targetW;
+    outCanvas.height = targetH;
+    const outCtx = outCanvas.getContext('2d', { willReadFrequently: true });
+
+    const frameCanvas = document.createElement('canvas');
+    frameCanvas.width = state.workCanvas.width;
+    frameCanvas.height = state.workCanvas.height;
+    const frameCtx = frameCanvas.getContext('2d', { willReadFrequently: true });
+
+    const maskSrc = cv.imread(state.maskCanvas);
+    const maskGray = new cv.Mat();
+    cv.cvtColor(maskSrc, maskGray, cv.COLOR_RGBA2GRAY);
+    cv.threshold(maskGray, maskGray, 10, 255, cv.THRESH_BINARY);
+    maskSrc.delete();
+
+    const stream = outCanvas.captureStream(30);
+
+    let mimeType = 'video/webm;codecs=vp9';
+    if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp8';
+    if (!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
+
+    const recorder = new MediaRecorder(stream, {
+      mimeType,
+      videoBitsPerSecond:
+        state.quality === 2160 ? 45000000 :
+        state.quality === 1080 ? 12000000 : 6000000
+    });
+    const chunks = [];
+    recorder.ondataavailable = (e) => { if (e.data.size) chunks.push(e.data); };
+
+    const recordingDone = new Promise((resolve) => {
+      recorder.onstop = () => resolve(new Blob(chunks, { type: mimeType }));
+    });
+
+    $('#progressCard').style.display = 'block';
+    $('#progressLabel').textContent = 'Processing video…';
+    setProgress(0);
+
+    const duration = vid.duration;
+    const fps = 30;
+    const totalFrames = Math.max(1, Math.ceil(duration * fps));
+    let frameIdx = 0;
+    const startTime = performance.now();
+
+    vid.pause();
+    vid.currentTime = 0;
+    await new Promise((r) => setTimeout(r, 100));
+
+    recorder.start();
+
+    for (let t = 0; t < duration; t += 1 / fps) {
+      await seekTo(vid, t);
+      frameCtx.clearRect(0, 0, frameCanvas.width, frameCanvas.height);
+      frameCtx.drawImage(vid, 0, 0, frameCanvas.width, frameCanvas.height);
+
+      const src = cv.imread(frameCanvas);
+      const srcRgb = new cv.Mat();
+      cv.cvtColor(src, srcRgb, cv.COLOR_RGBA2RGB);
+
+      const dst = new cv.Mat();
+      cv.inpaint(srcRgb, maskGray, dst, 5, cv.INPAINT_TELEA);
+
+      const tmp = document.createElement('canvas');
+      tmp.width = frameCanvas.width;
+      tmp.height = frameCanvas.height;
+      cv.imshow(tmp, dst);
+
+      outCtx.clearRect(0, 0, outCanvas.width, outCanvas.height);
+      outCtx.drawImage(tmp, 0, 0, outCanvas.width, outCanvas.height);
+
+      src.delete(); srcRgb.delete(); dst.delete();
+
+      frameIdx++;
+      if (frameIdx % 3 === 0 || t + (1 / fps) >= duration) {
+        const pct = Math.min(100, (frameIdx / totalFrames) * 100);
+        setProgress(pct);
+        const elapsed = (performance.now() - startTime) / 1000;
+        const eta = pct > 5 ? (elapsed / pct) * (100 - pct) : 0;
+        $('#progressSub').textContent = `Frame ${frameIdx}/${totalFrames} · ETA ~${Math.round(eta)}s`;
+        await new Promise((r) => setTimeout(r, 0));
+      }
+    }
+
+    await new Promise((r) => setTimeout(r, 300));
+
+    recorder.stop();
+    const blob = await recordingDone;
+    maskGray.delete();
+
+    state.resultBlob = blob;
+    const url = URL.createObjectURL(blob);
+    const ext = mimeType.includes('webm') ? 'webm' : 'mp4';
+    updateDownloadUI(url, `logoGone.${ext}`);
+
+    $('#progressLabel').textContent = 'Done ✓';
+    setProgress(100);
+    $('#progressSub').textContent = `Output: ${targetW}×${targetH} · ${(blob.size / 1024 / 1024).toFixed(1)} MB`;
+    hideOverlay();
+    toast('Video processed ✓ Download below', 'success', 5000);
+  } catch (e) {
+    console.error(e);
+    hideOverlay();
+    toast('Video processing failed: ' + (e.message || e), 'error', 6000);
+  }
+}
+
+function setProgress(pct) {
+  const clamped = Math.max(0, Math.min(100, pct));
+  $('#progressFill').style.width = clamped + '%';
+  $('#progressPct').textContent = Math.round(clamped) + '%';
+}
+
+function showOverlay(text) {
+  $('#overlayText').textContent = text;
+  $('#canvasOverlay').classList.add('show');
+}
+function hideOverlay() {
+  $('#canvasOverlay').classList.remove('show');
+}
+
+function updateDownloadUI(url, filename) {
+  const wrap = $('#downloadWrap');
+  wrap.innerHTML = '';
+  if (!url) return;
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename || 'logoGone';
+  a.className = 'btn btn-primary';
+  a.innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    Download ${filename ? '(' + filename.split('.').pop().toUpperCase() + ')' : ''}
+  `;
+  wrap.appendChild(a);
+}
+
+let previewState = false;
+$('#btnPreview').addEventListener('click', () => {
+  if (!state.resultBlob) { toast('Process first to preview', 'info'); return; }
+  previewState = !previewState;
+  if (previewState) {
+    redrawSource();
+    toast('Showing original', 'info', 1500);
+  } else {
+    const url = URL.createObjectURL(state.resultBlob);
+    const img = new Image();
+    img.onload = () => {
+      state.workCtx.clearRect(0, 0, state.workCanvas.width, state.workCanvas.height);
+      state.workCtx.drawImage(img, 0, 0, state.workCanvas.width, state.workCanvas.height);
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+    toast('Showing result', 'info', 1500);
+  }
+});
+
+$('#year').textContent = new Date().getFullYear();
+$('#modePaint').style.background = 'linear-gradient(135deg, rgba(124,92,255,0.3), rgba(77,171,255,0.3))';
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('#btnUndo').click(); }
+  if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); $('#btnProcess').click(); }
+});
+</script>
 </body>
 </html>
