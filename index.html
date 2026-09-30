@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description" content="LogoGone — Remove any logo from photos and videos. Free, private, 4K-ready. Runs 100% in your browser." />
+  <meta name="theme-color" content="#06070d" />
+  <title>LogoGone — Remove any logo. Free. Private. 4K.</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- OpenCV loader overlay -->
+  <div class="loader-full show" id="cvLoader">
+    <div class="spinner"></div>
+    <div class="loader-text" id="cvLoaderText">Loading AI engine… (first time only)</div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <div class="logo" id="logoBtn">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="logo-text"><span>LogoGone</span></div>
+        <span class="nav-tag">FREE</span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- HERO / UPLOAD -->
+    <section class="hero" id="uploadSection">
+      <div class="badge"><span class="badge-dot"></span> 100% browser-based · No upload · No server · Free forever</div>
+      <h1>Remove any <span class="grad-text">logo</span>.<br>Keep the quality.</h1>
+      <p class="subtitle">Photos and videos. Up to 4K. Brush over the logo — our engine fills it perfectly. Nothing leaves your device.</p>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-mode="photo" role="tab">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+          </svg>
+          Photo
+        </button>
+        <button class="tab" data-mode="video" role="tab">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+          Video
+        </button>
+      </div>
+
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-icon">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+        </div>
+        <div class="drop-title" id="dropTitle">Drop your photo here</div>
+        <div class="drop-sub" id="dropSub">or click to browse — JPG, PNG, WebP, HEIC</div>
+        <button class="btn btn-primary" type="button" id="chooseBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+          Choose file
+        </button>
+        <div class="drop-hint">🔒 Files never leave your browser</div>
+        <input type="file" id="fileInput" accept="image/*" hidden />
+      </div>
+    </section>
+
+    <!-- EDITOR -->
+    <section class="editor" id="editorSection" style="display:none;">
+      <div class="editor-top">
+        <div class="editor-tools">
+          <div class="tool-group">
+            <label>Brush</label>
+            <input type="range" id="brushSize" min="5" max="120" value="30" />
+            <span id="brushVal" class="brush-val">30</span>
+          </div>
+          <div class="tool-group">
+            <label>Mode</label>
+            <button class="btn btn-ghost btn-sm" id="modePaint" title="Paint to mark logo">✏️ Mark</button>
+            <button class="btn btn-ghost btn-sm" id="modeErase" title="Erase mark">🧽 Erase</button>
+          </div>
+        </div>
+        <div class="editor-tools">
+          <button class="btn btn-ghost btn-sm" id="btnUndo">↶ Undo</button>
+          <button class="btn btn-ghost btn-sm" id="btnClear">Clear</button>
+          <button class="btn btn-ghost btn-sm" id="btnNew">New file</button>
+        </div>
+      </div>
+
+      <div class="quality-picker" id="qualityPicker">
+        <button class="q-btn" data-q="480">⚡ 480p <small>fastest</small></button>
+        <button class="q-btn" data-q="720">⚡ 720p <small>fast</small></button>
+        <button class="q-btn active" data-q="1080">⚖️ 1080p <small>balanced</small></button>
+        <button class="q-btn" data-q="2160">🎯 4K <small>max</small></button>
+        <button class="q-btn" data-q="0">💎 Original <small>no resize</small></button>
+      </div>
+      <div class="progress-sub" id="qualityHint">1080p recommended for most use. 4K takes longer but keeps full resolution.</div>
+
+      <div class="canvas-wrap">
+        <canvas id="canvas"></canvas>
+        <div class="canvas-overlay" id="canvasOverlay">
+          <div class="spinner"></div>
+          <div class="overlay-text" id="overlayText">Processing…</div>
+        </div>
+      </div>
+
+      <div class="editor-actions">
+        <button class="btn btn-primary" id="btnProcess">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          Remove logo
+        </button>
+        <button class="btn btn-ghost" id="btnPreview">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+          Before / After
+        </button>
+      </div>
+
+      <div class="progress-card" id="progressCard" style="display:none;">
+        <div class="progress-head">
+          <span id="progressLabel">Processing…</span>
+          <span class="pct" id="progressPct">0%</span>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        <div class="progress-sub" id="progressSub">Please keep this tab open</div>
+      </div>
+
+      <div class="download-wrap" id="downloadWrap"></div>
+    </section>
+
+    <!-- FEATURES -->
+    <section>
+      <div class="section-head">
+        <div class="section-title">Why LogoGone</div>
+        <div class="section-sub">Built for real use — free, private, high quality.</div>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            </svg>
+          </div>
+          <h3>100% private</h3>
+          <p>Files never leave your device. Everything runs inside your browser.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            </svg>
+          </div>
+          <h3>4K ready</h3>
+          <p>Input 4K, output 4K. High bitrate output, no forced downscale.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+            </svg>
+          </div>
+          <h3>Fast inpainting</h3>
+          <p>OpenCV Telea + Navier-Stokes — fills marked areas seamlessly.</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h3>Always free</h3>
+          <p>No signup. No credits. No limits. Works offline after first load.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>© <span id="year"></span> LogoGone · Remove logos. Keep quality.</div>
+      <div class="footer-note">Powered by OpenCV.js · Runs offline</div>
+    </div>
+  </footer>
+
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <!-- OpenCV.js loaded dynamically in app.js -->
+  <script src="app.js"></script>
+</body>
+</html>
