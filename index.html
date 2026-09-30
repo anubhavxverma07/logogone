@@ -14,13 +14,11 @@
 </head>
 <body>
 
-  <!-- OpenCV loader overlay -->
   <div class="loader-full show" id="cvLoader">
     <div class="spinner"></div>
     <div class="loader-text" id="cvLoaderText">Loading AI engine… (first time only)</div>
   </div>
 
-  <!-- NAV -->
   <nav>
     <div class="nav-inner">
       <div class="logo" id="logoBtn">
@@ -39,7 +37,6 @@
 
   <main class="container">
 
-    <!-- HERO / UPLOAD -->
     <section class="hero" id="uploadSection">
       <div class="badge"><span class="badge-dot"></span> 100% browser-based · No upload · No server · Free forever</div>
       <h1>Remove any <span class="grad-text">logo</span>.<br>Keep the quality.</h1>
@@ -80,7 +77,6 @@
       </div>
     </section>
 
-    <!-- EDITOR -->
     <section class="editor" id="editorSection" style="display:none;">
       <div class="editor-top">
         <div class="editor-tools">
@@ -111,8 +107,11 @@
       </div>
       <div class="progress-sub" id="qualityHint">1080p recommended for most use. 4K takes longer but keeps full resolution.</div>
 
-      <div class="canvas-wrap">
+      <div class="canvas-wrap" id="canvasWrap">
         <canvas id="canvas"></canvas>
+        <div class="magnifier" id="magnifier">
+          <canvas id="magnifierCanvas"></canvas>
+        </div>
         <div class="canvas-overlay" id="canvasOverlay">
           <div class="spinner"></div>
           <div class="overlay-text" id="overlayText">Processing…</div>
@@ -146,7 +145,6 @@
       <div class="download-wrap" id="downloadWrap"></div>
     </section>
 
-    <!-- FEATURES -->
     <section>
       <div class="section-head">
         <div class="section-title">Why LogoGone</div>
@@ -199,11 +197,13 @@
       <div>© <span id="year"></span> LogoGone · Remove logos. Keep quality.</div>
       <div class="footer-note">Powered by OpenCV.js · Runs offline</div>
     </div>
+    <div class="container">
+      <div class="footer-brand">Made in Bharat, Crafted by Anubhav Verma</div>
+    </div>
   </footer>
 
   <div class="toast-wrap" id="toastWrap"></div>
 
-  <!-- OpenCV.js loaded dynamically in app.js -->
   <script src="app.js"></script>
 </body>
 </html>

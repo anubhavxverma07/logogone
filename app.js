@@ -38,7 +38,6 @@ const state = {
   maskCanvas: null,
   maskCtx: null,
   backupCanvas: null,
-  backupCtx: null,
   history: [],
   painting: false,
   brushSize: 30,
@@ -128,7 +127,10 @@ dropZone.addEventListener('drop', (e) => {
   const f = e.dataTransfer.files[0];
   if (f) handleFile(f);
 });
-dropZone.addEventListener('click', () => fileInput.click());
+dropZone.addEventListener('click', (e) => {
+  if (e.target.closest('#chooseBtn')) return;
+  fileInput.click();
+});
 $('#chooseBtn').addEventListener('click', (e) => {
   e.stopPropagation();
   fileInput.click();
@@ -200,32 +202,44 @@ function setupEditor(w, h, source) {
   scrollTo({ top: 0, behavior: 'smooth' });
 
   const maxW = Math.min(window.innerWidth - 40, 1100);
-  const maxH = window.innerHeight * 0.68;
-  const ratio = Math.min(maxW / w, maxH / h, 1);
-  const dispW = Math.round(w * ratio);
-  const dispH = Math.round(h * ratio);
+  const maxH = window.innerHeight * 0.65;
+
+  // Cap internal resolution for performance (prevents crash & squish)
+  const MAX_RES = 1600;
+  let procW = w, procH = h;
+  if (Math.max(w, h) > MAX_RES) {
+    const scale = MAX_RES / Math.max(w, h);
+    procW = Math.round(w * scale);
+    procH = Math.round(h * scale);
+  }
 
   const canvas = $('#canvas');
-  canvas.width = dispW;
-  canvas.height = dispH;
+  canvas.width = procW;
+  canvas.height = procH;
+
+  // Calculate display size preserving aspect ratio
+  const ratio = Math.min(maxW / procW, maxH / procH, 1);
+  const dispW = Math.round(procW * ratio);
+  const dispH = Math.round(procH * ratio);
   canvas.style.width = dispW + 'px';
   canvas.style.height = dispH + 'px';
 
   const ctx = canvas.getContext('2d', { willReadFrequently: true });
   state.workCanvas = canvas;
   state.workCtx = ctx;
-  ctx.drawImage(source, 0, 0, dispW, dispH);
+  ctx.drawImage(source, 0, 0, procW, procH);
 
+  // Mask canvas (same internal size)
   const mc = document.createElement('canvas');
-  mc.width = dispW; mc.height = dispH;
+  mc.width = procW; mc.height = procH;
   state.maskCanvas = mc;
   state.maskCtx = mc.getContext('2d', { willReadFrequently: true });
 
   state.history = [];
   state.lastPointer = null;
   state.backupCanvas = null;
-  state.originalDisplayW = dispW;
-  state.originalDisplayH = dispH;
+  state.originalDisplayW = procW;
+  state.originalDisplayH = procH;
   state.originalSourceW = w;
   state.originalSourceH = h;
 
@@ -240,13 +254,39 @@ function attachCanvasEvents() {
   if (!c || c.dataset.bound) return;
   c.dataset.bound = '1';
 
+  const mag = $('#magnifier');
+  const magCanvas = $('#magnifierCanvas');
+  magCanvas.width = 130;
+  magCanvas.height = 130;
+  const magCtx = magCanvas.getContext('2d');
+
   const getPos = (e) => {
     const rect = c.getBoundingClientRect();
     const cx = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
     const cy = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
     const scaleX = c.width / rect.width;
     const scaleY = c.height / rect.height;
-    return { x: cx * scaleX, y: cy * scaleY };
+    return { x: cx * scaleX, y: cy * scaleY, clientX: e.touches ? e.touches[0].clientX : e.clientX, clientY: e.touches ? e.touches[0].clientY : e.clientY };
+  };
+
+  const updateMagnifier = (p) => {
+    const wrapRect = c.parentElement.getBoundingClientRect();
+    let magLeft = p.clientX - wrapRect.left + 20;
+    if (magLeft + 130 > wrapRect.width) magLeft = magLeft - 170;
+    let magTop = p.clientY - wrapRect.top - 150;
+    if (magTop < 0) magTop = magTop + 170;
+
+    mag.style.left = magLeft + 'px';
+    mag.style.top = magTop + 'px';
+
+    const zoom = 3;
+    const size = 130 / zoom;
+    magCtx.clearRect(0, 0, 130, 130);
+    // Draw a portion of the current canvas (with brush marks) into the magnifier
+    magCtx.drawImage(state.workCanvas,
+      (p.x - size / 2), (p.y - size / 2), size, size,
+      0, 0, 130, 130
+    );
   };
 
   const start = (e) => {
@@ -256,6 +296,8 @@ function attachCanvasEvents() {
     const p = getPos(e);
     state.lastPointer = p;
     drawMark(p, p);
+    mag.style.display = 'block';
+    updateMagnifier(p);
   };
   const move = (e) => {
     if (!state.painting) return;
@@ -263,11 +305,13 @@ function attachCanvasEvents() {
     const p = getPos(e);
     drawMark(state.lastPointer, p);
     state.lastPointer = p;
+    updateMagnifier(p);
   };
   const end = () => {
     if (!state.painting) return;
     state.painting = false;
     state.lastPointer = null;
+    mag.style.display = 'none';
   };
 
   c.addEventListener('mousedown', start);
@@ -285,18 +329,16 @@ function drawMark(from, to) {
   const mctx = state.maskCtx;
   const size = state.brushSize;
 
-  // backup original visible frame once
   if (!state.backupCanvas) {
     const bc = document.createElement('canvas');
     bc.width = state.workCanvas.width;
     bc.height = state.workCanvas.height;
     state.backupCanvas = bc;
-    state.backupCtx = bc.getContext('2d', { willReadFrequently: true });
-    state.backupCtx.drawImage(state.workCanvas, 0, 0);
+    state.backupCanvas.getContext('2d', { willReadFrequently: true }).drawImage(state.workCanvas, 0, 0);
   }
 
   if (state.tool === 'paint') {
-    // mask: solid white
+    // Mask: solid white
     mctx.save();
     mctx.strokeStyle = '#ffffff';
     mctx.fillStyle = '#ffffff';
@@ -312,10 +354,10 @@ function drawMark(from, to) {
     mctx.fill();
     mctx.restore();
 
-    // visible: translucent brand tint
+    // Visible: translucent brand tint (30% opacity)
     ctx.save();
-    ctx.strokeStyle = 'rgba(124,92,255,0.55)';
-    ctx.fillStyle = 'rgba(124,92,255,0.55)';
+    ctx.strokeStyle = 'rgba(124,92,255,0.3)';
+    ctx.fillStyle = 'rgba(124,92,255,0.3)';
     ctx.lineWidth = size;
     ctx.lineCap = 'round';
     ctx.lineJoin = 'round';
@@ -328,7 +370,7 @@ function drawMark(from, to) {
     ctx.fill();
     ctx.restore();
   } else {
-    // erase mask
+    // Erase mask
     mctx.save();
     mctx.globalCompositeOperation = 'destination-out';
     mctx.strokeStyle = '#000';
@@ -345,7 +387,7 @@ function drawMark(from, to) {
     mctx.fill();
     mctx.restore();
 
-    // restore visible pixels from backup along stroke
+    // Restore visible pixels from backup
     const dist = Math.hypot(to.x - from.x, to.y - from.y);
     const steps = Math.max(1, Math.floor(dist / (size / 3)));
     for (let i = 0; i <= steps; i++) {
@@ -486,7 +528,7 @@ async function processPhoto() {
   } catch (e) {
     console.error(e);
     hideOverlay();
-    toast('Processing failed: ' + e.message, 'error');
+    toast('Processing failed: ' + (e.message || e), 'error');
   }
 }
 
@@ -495,19 +537,24 @@ function inpaintCanvas(sourceCanvas, maskCanvas, radius = 5) {
   const src  = cv.imread(sourceCanvas);
   const mask = cv.imread(maskCanvas);
 
+  // FIX: OpenCV.js inpaint expects CV_8UC1 or CV_8UC3 source.
+  // cv.imread gives RGBA (4-channel). Convert to RGB.
+  const srcRgb = new cv.Mat();
+  cv.cvtColor(src, srcRgb, cv.COLOR_RGBA2RGB);
+
   const gray = new cv.Mat();
   cv.cvtColor(mask, gray, cv.COLOR_RGBA2GRAY);
   cv.threshold(gray, gray, 10, 255, cv.THRESH_BINARY);
 
   const dst = new cv.Mat();
-  cv.inpaint(src, gray, dst, radius, cv.INPAINT_TELEA);
+  cv.inpaint(srcRgb, gray, dst, radius, cv.INPAINT_TELEA);
 
   const out = document.createElement('canvas');
   out.width = sourceCanvas.width;
   out.height = sourceCanvas.height;
   cv.imshow(out, dst);
 
-  src.delete(); mask.delete(); gray.delete(); dst.delete();
+  src.delete(); srcRgb.delete(); mask.delete(); gray.delete(); dst.delete();
   return out;
 }
 
@@ -591,8 +638,11 @@ async function processVideo() {
       frameCtx.drawImage(vid, 0, 0, frameCanvas.width, frameCanvas.height);
 
       const src = cv.imread(frameCanvas);
+      const srcRgb = new cv.Mat();
+      cv.cvtColor(src, srcRgb, cv.COLOR_RGBA2RGB);
+
       const dst = new cv.Mat();
-      cv.inpaint(src, maskGray, dst, 5, cv.INPAINT_TELEA);
+      cv.inpaint(srcRgb, maskGray, dst, 5, cv.INPAINT_TELEA);
 
       const tmp = document.createElement('canvas');
       tmp.width = frameCanvas.width;
@@ -602,7 +652,7 @@ async function processVideo() {
       outCtx.clearRect(0, 0, outCanvas.width, outCanvas.height);
       outCtx.drawImage(tmp, 0, 0, outCanvas.width, outCanvas.height);
 
-      src.delete(); dst.delete();
+      src.delete(); srcRgb.delete(); dst.delete();
 
       frameIdx++;
       if (frameIdx % 3 === 0 || t + (1 / fps) >= duration) {
@@ -634,7 +684,7 @@ async function processVideo() {
   } catch (e) {
     console.error(e);
     hideOverlay();
-    toast('Video processing failed: ' + e.message, 'error', 6000);
+    toast('Video processing failed: ' + (e.message || e), 'error', 6000);
   }
 }
 
