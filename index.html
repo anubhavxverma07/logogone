@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-<meta name="description" content="LogoGone — AI logo removal. Free, private, 4K." />
+<meta name="description" content="LogoGone — AI logo removal for video and photo." />
 <meta name="theme-color" content="#06070d" />
 <title>LogoGone — AI Logo Remover</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,6 @@ body::before{content:'';position:fixed;inset:0;z-index:-2;background:radial-grad
 @keyframes mesh{0%{transform:translate(0,0) scale(1);}50%{transform:translate(-3%,-2%) scale(1.05);}100%{transform:translate(2%,3%) scale(1);}}
 .container{max-width:1180px;margin:0 auto;padding:0 22px;}
 .visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
-
 nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba(6,7,13,0.65);border-bottom:1px solid var(--border);}
 .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 22px;max-width:1180px;margin:0 auto;}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-0.02em;cursor:pointer;}
@@ -31,7 +30,6 @@ nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);background:rgba
 .nav-tag.ai{background:linear-gradient(135deg,rgba(34,211,160,0.15),rgba(34,211,160,0.05));border:1px solid rgba(34,211,160,0.3);color:var(--success);}
 .nav-tag.basic{background:linear-gradient(135deg,rgba(255,181,71,0.15),rgba(255,181,71,0.05));border:1px solid rgba(255,181,71,0.3);color:var(--warning);}
 .nav-tag.loading{background:linear-gradient(135deg,rgba(124,92,255,0.15),rgba(124,92,255,0.05));border:1px solid rgba(124,92,255,0.3);color:#b8a4ff;}
-
 .hero{padding:60px 0 30px;text-align:center;}
 .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--card);border:1px solid var(--border);font-size:12.5px;color:var(--text-dim);margin-bottom:20px;backdrop-filter:blur(10px);}
 .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--success);box-shadow:0 0 12px var(--success);animation:pulse 2s infinite;}
@@ -40,18 +38,15 @@ h1{font-size:clamp(34px,6vw,62px);font-weight:900;letter-spacing:-0.04em;line-he
 .grad-text{background:linear-gradient(135deg,var(--brand-1) 0%,var(--brand-2) 50%,var(--brand-3) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 200%;animation:gradShift 4s ease infinite;}
 @keyframes gradShift{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
 .subtitle{color:var(--text-dim);font-size:clamp(14px,1.5vw,17px);max-width:620px;margin:0 auto 32px;}
-
 .tabs{display:inline-flex;gap:4px;padding:5px;background:var(--card);border:1px solid var(--border);border-radius:14px;margin-bottom:28px;backdrop-filter:blur(10px);}
 .tab{padding:10px 22px;border-radius:10px;border:none;background:transparent;color:var(--text-dim);font-family:inherit;font-weight:600;font-size:14px;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;gap:8px;}
 .tab.active{background:linear-gradient(135deg,var(--brand-1),var(--brand-2));color:#fff;box-shadow:0 6px 20px rgba(124,92,255,0.4);}
-
 .drop-zone{max-width:720px;margin:0 auto;border:2px dashed var(--border);border-radius:24px;padding:60px 30px;background:var(--card);backdrop-filter:blur(20px);cursor:pointer;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;display:block;}
 .drop-zone:hover,.drop-zone.drag{border-color:var(--brand-1);background:var(--card-hover);transform:translateY(-2px);box-shadow:0 20px 60px rgba(124,92,255,0.2);}
 .drop-icon{width:70px;height:70px;margin:0 auto 20px;border-radius:20px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(124,92,255,0.15),rgba(77,171,255,0.15));border:1px solid rgba(124,92,255,0.3);color:var(--accent);}
 .drop-title{font-size:20px;font-weight:700;margin-bottom:8px;letter-spacing:-0.02em;}
 .drop-sub{color:var(--text-dim);font-size:14px;margin-bottom:20px;}
 .drop-hint{color:var(--text-mute);font-size:12px;margin-top:16px;}
-
 .btn{border:none;cursor:pointer;font-family:inherit;font-weight:600;font-size:14px;padding:12px 22px;border-radius:12px;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;text-decoration:none;}
 .btn-primary{background:linear-gradient(135deg,var(--brand-1),var(--brand-2));color:#fff;box-shadow:0 10px 30px rgba(124,92,255,0.35);position:relative;overflow:hidden;}
 .btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(255,255,255,0.2),transparent);transform:translateX(-100%);transition:transform 0.6s;}
@@ -61,7 +56,6 @@ h1{font-size:clamp(34px,6vw,62px);font-weight:900;letter-spacing:-0.04em;line-he
 .btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border);}
 .btn-ghost:hover{background:var(--card-hover);border-color:var(--border-hover);}
 .btn-sm{padding:9px 14px;font-size:13px;}
-
 .editor{position:fixed;inset:0;z-index:150;background:var(--bg);display:none;flex-direction:column;}
 .editor.active{display:flex;}
 .editor-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));background:rgba(6,7,13,0.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10;}
@@ -93,7 +87,6 @@ h1{font-size:clamp(34px,6vw,62px);font-weight:900;letter-spacing:-0.04em;line-he
 .quality-row.show{display:flex;}
 .q-chip{padding:7px 12px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text-dim);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .q-chip.active{background:linear-gradient(135deg,rgba(124,92,255,0.25),rgba(77,171,255,0.25));border-color:var(--brand-1);color:var(--text);}
-
 .progress-full{position:fixed;inset:0;z-index:500;background:rgba(6,7,13,0.96);backdrop-filter:blur(20px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px;opacity:0;pointer-events:none;transition:opacity 0.4s;text-align:center;}
 .progress-full.show{opacity:1;pointer-events:auto;}
 .spinner{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,0.15);border-top-color:var(--brand-2);animation:spin 0.8s linear infinite;}
@@ -104,11 +97,14 @@ h1{font-size:clamp(34px,6vw,62px);font-weight:900;letter-spacing:-0.04em;line-he
 .progress-bar-fill{height:100%;background:linear-gradient(90deg,var(--brand-1),var(--brand-2),var(--accent));border-radius:4px;width:0%;transition:width 0.3s;background-size:200% 100%;animation:progAnim 2s linear infinite;}
 @keyframes progAnim{0%{background-position:0% 0%;}100%{background-position:200% 0%;}}
 .progress-pct{font-size:13px;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;}
-
 .download-bar{position:fixed;bottom:0;left:0;right:0;padding:16px;padding-bottom:max(16px,env(safe-area-inset-bottom));background:rgba(6,7,13,0.96);backdrop-filter:blur(24px);border-top:1px solid rgba(34,211,160,0.3);display:none;justify-content:center;gap:10px;z-index:200;animation:slideUp 0.4s cubic-bezier(0.4,0,0.2,1);}
 .download-bar.show{display:flex;}
 @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-
+.prompt-box{max-width:600px;margin:0 auto 16px;padding:14px 18px;background:var(--card);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(10px);}
+.prompt-box label{display:block;font-size:12px;font-weight:700;color:var(--text-dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.05em;}
+.prompt-box input{width:100%;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:10px;padding:12px 14px;color:var(--text);font-family:inherit;font-size:14px;outline:none;transition:all 0.2s;}
+.prompt-box input:focus{border-color:var(--brand-1);box-shadow:0 0 0 3px rgba(124,92,255,0.15);}
+.prompt-hint{font-size:12px;color:var(--text-mute);margin-top:8px;}
 section{padding:50px 0;}
 .section-head{margin-bottom:24px;}
 .section-title{font-size:22px;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;}
@@ -123,7 +119,6 @@ footer{border-top:1px solid var(--border);padding:30px 0;margin-top:40px;color:v
 .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
 .footer-note{opacity:0.6;}
 .footer-brand{text-align:center;margin-top:20px;font-size:12px;letter-spacing:0.08em;font-weight:600;background:linear-gradient(135deg,var(--brand-1),var(--brand-2));-webkit-background-clip:text;background-clip:text;color:transparent;text-transform:uppercase;}
-
 .toast-wrap{position:fixed;bottom:22px;right:22px;z-index:600;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
 .toast{background:linear-gradient(135deg,#14172a,#0e1020);border:1px solid var(--border);border-radius:12px;padding:13px 17px;color:var(--text);font-size:13.5px;font-weight:500;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;min-width:240px;max-width:360px;animation:toastIn 0.4s cubic-bezier(0.4,0,0.2,1);pointer-events:auto;backdrop-filter:blur(20px);}
 @keyframes toastIn{from{opacity:0;transform:translateX(100%);}to{opacity:1;transform:translateX(0);}}
@@ -134,8 +129,7 @@ footer{border-top:1px solid var(--border);padding:30px 0;margin-top:40px;color:v
 .toast.error .toast-icon{color:var(--danger);}
 .toast.info .toast-icon{color:var(--brand-2);}
 .toast.warning .toast-icon{color:var(--warning);}
-
-@media(max-width:700px){.container{padding:0 14px;}.hero{padding:40px 0 20px;}.drop-zone{padding:40px 20px;}.tabs{width:100%;}.tab{flex:1;justify-content:center;padding:10px 12px;font-size:13px;}.toolbar-row{gap:8px;}.tool-chip{padding:8px 11px;font-size:12px;}.tool-chip span{display:none;}.tool-chip{padding:9px 10px;}.brush-control{padding:8px 10px;gap:8px;}.brush-control input[type=range]{width:70px;}.btn-process{font-size:14px;padding:13px 18px;}.toast-wrap{left:14px;right:14px;bottom:14px;}.toast{min-width:0;}.magnifier{width:110px;height:110px;}}
+@media(max-width:700px){.container{padding:0 14px;}.hero{padding:40px 0 20px;}.drop-zone{padding:40px 20px;}.tabs{width:100%;}.tab{flex:1;justify-content:center;padding:10px 12px;font-size:13px;}.toolbar-row{gap:8px;}.tool-chip{padding:8px 11px;font-size:12px;}.tool-chip span{display:none;}.tool-chip{padding:9px 10px;}.brush-control{padding:8px 10px;gap:8px;}.brush-control input[type=range]{width:70px;}.btn-process{font-size:14px;padding:13px 18px;}.toast-wrap{left:14px;right:14px;bottom:14px;}.toast{min-width:0;}.magnifier{width:110px;height:110px;}.prompt-box{padding:12px 14px;}}
 @media(min-width:701px){.tool-chip span{display:inline;}}
 ::-webkit-scrollbar{width:10px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:#1e2235;border-radius:5px;border:2px solid var(--bg);}::-webkit-scrollbar-thumb:hover{background:#2a3050;}
 </style>
@@ -145,67 +139,59 @@ footer{border-top:1px solid var(--border);padding:30px 0;margin-top:40px;color:v
 <nav>
   <div class="nav-inner">
     <div class="logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-      </div>
+      <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
       <div class="logo-text"><span>LogoGone</span></div>
-      <span class="nav-tag loading" id="engineBadge" title="Engine status">Loading…</span>
+      <span class="nav-tag ai" id="engineBadge" title="Click for info">Ready</span>
     </div>
   </div>
 </nav>
 
 <main class="container">
   <section class="hero" id="uploadSection">
-    <div class="badge"><span class="badge-dot"></span> AI-powered · 100% browser · Free forever</div>
+    <div class="badge"><span class="badge-dot"></span> Video AI via Magic Hour · Photo AI via LaMa (PC) · Free</div>
     <h1>Remove any <span class="grad-text">logo</span>.<br>Keep the quality.</h1>
-    <p class="subtitle">Brush over the logo — AI fills it perfectly. Nothing leaves your device.</p>
+    <p class="subtitle">Upload video → describe logo location → AI removes it. Photos work on PC with LaMa AI.</p>
     <div class="tabs" role="tablist">
-      <button class="tab active" data-mode="photo" role="tab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Photo</button>
-      <button class="tab" data-mode="video" role="tab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>Video</button>
+      <button class="tab active" data-mode="video" role="tab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>Video</button>
+      <button class="tab" data-mode="photo" role="tab"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>Photo</button>
     </div>
     <div class="drop-zone" id="dropZone">
       <div class="drop-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div>
-      <div class="drop-title" id="dropTitle">Drop your photo here</div>
-      <div class="drop-sub" id="dropSub">or click to browse — JPG, PNG, WebP, HEIC</div>
-      <label for="fileInput" class="btn btn-primary" style="cursor:pointer;display:inline-flex;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Choose file
-      </label>
-      <div class="drop-hint">🔒 Files never leave your browser</div>
+      <div class="drop-title" id="dropTitle">Drop your video here</div>
+      <div class="drop-sub" id="dropSub">or click to browse — MP4, WebM, MOV (max 45 sec)</div>
+      <label for="fileInput" class="btn btn-primary" style="cursor:pointer;display:inline-flex;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Choose file</label>
+      <div class="drop-hint">🔒 Video sent securely to Magic Hour API</div>
     </div>
-    <input type="file" id="fileInput" accept="image/*" class="visually-hidden" />
+    <input type="file" id="fileInput" accept="video/*" class="visually-hidden" />
   </section>
 
   <section>
-    <div class="section-head"><div class="section-title">Why LogoGone</div><div class="section-sub">Built for real use — free, private, AI-powered.</div></div>
+    <div class="section-head"><div class="section-title">Why LogoGone</div><div class="section-sub">AI-powered video and photo logo removal.</div></div>
     <div class="features">
-      <div class="feature"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><h3>Smart inpainting</h3><p>Fills logos seamlessly — no smudge, no trace. AI when available, smart fallback always.</p></div>
-      <div class="feature"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>100% private</h3><p>Files never leave your device. Everything runs inside your browser.</p></div>
-      <div class="feature"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><h3>4K ready</h3><p>Input 4K, output 4K. High bitrate, no forced downscale.</p></div>
-      <div class="feature"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3>Always free</h3><p>No signup. No credits. No limits.</p></div>
+      <div class="feature"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></div><h3>Video AI</h3><p>Magic Hour API removes logos from videos. 480p free, 100 credits/day.</p></div>
+      <div class="feature"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div><h3>LaMa Photo AI</h3><p>Desktop pe free unlimited photo inpainting with LaMa AI model.</p></div>
+      <div class="feature"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h3>Private</h3><p>Photos never leave your device. Videos processed securely via API.</p></div>
+      <div class="feature"><div class="feature-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><h3>100 credits/day</h3><p>Magic Hour free tier: 100 credits daily, no credit card.</p></div>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="container footer-inner"><div>© <span id="year"></span> LogoGone</div><div class="footer-note">Runs offline · No tracking</div></div>
+  <div class="container footer-inner"><div>© <span id="year"></span> LogoGone</div><div class="footer-note">Video AI: Magic Hour · Photo AI: LaMa</div></div>
   <div class="container"><div class="footer-brand">Made in Bharat, Crafted by Anubhav Verma</div></div>
 </footer>
 
 <div class="editor" id="editor">
-  <div class="editor-header">
-    <div class="editor-title"><span class="editor-title-dot"></span><span id="editorFileInfo">Editing</span></div>
-    <button class="editor-close" id="editorClose"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-  </div>
-  <div class="canvas-area" id="canvasArea">
-    <canvas id="canvas"></canvas>
-    <div class="magnifier" id="magnifier"><canvas id="magnifierCanvas"></canvas></div>
-  </div>
+  <div class="editor-header"><div class="editor-title"><span class="editor-title-dot"></span><span id="editorFileInfo">Editing</span></div><button class="editor-close" id="editorClose"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="canvas-area" id="canvasArea"><canvas id="canvas"></canvas><div class="magnifier" id="magnifier"><canvas id="magnifierCanvas"></canvas></div></div>
   <div class="toolbar">
-    <div class="quality-row" id="qualityRow">
-      <button class="q-chip" data-q="480">480p</button><button class="q-chip" data-q="720">720p</button><button class="q-chip active" data-q="1080">1080p</button><button class="q-chip" data-q="2160">4K</button><button class="q-chip" data-q="0">Original</button>
+    <div class="prompt-box" id="promptBox" style="display:none;">
+      <label>Describe where the logo is</label>
+      <input type="text" id="videoPrompt" placeholder="Remove the logo in the bottom right corner" />
+      <div class="prompt-hint">Example: "Remove the watermark in the center of the screen"</div>
     </div>
-    <div class="toolbar-row">
+    <div class="quality-row" id="qualityRow"><button class="q-chip active" data-q="480">480p Free</button><button class="q-chip" data-q="720">720p</button><button class="q-chip" data-q="1080">1080p</button></div>
+    <div class="toolbar-row" id="brushToolsRow">
       <div class="brush-control"><div class="brush-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg></div><input type="range" id="brushSize" min="5" max="150" value="40" /><span class="brush-value" id="brushVal">40</span></div>
       <button class="tool-chip active" id="modePaint"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/></svg><span>Mark</span></button>
       <button class="tool-chip" id="modeErase"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16a2 2 0 0 1 0-2.83L13.17 3a2 2 0 0 1 2.83 0L22 9a2 2 0 0 1 0 2.83L13 21"/></svg><span>Erase</span></button>
@@ -227,21 +213,24 @@ const $$=(s)=>document.querySelectorAll(s);
 
 function toast(msg,type='info',ms=3200){const wrap=$('#toastWrap');const el=document.createElement('div');el.className='toast '+type;const icons={success:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',error:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',info:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',warning:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'};el.innerHTML='<div class="toast-icon">'+(icons[type]||icons.info)+'</div><div>'+msg+'</div>';wrap.appendChild(el);setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),400);},ms);}
 
-const state={mode:'photo',originalImage:null,originalVideo:null,workCanvas:null,workCtx:null,maskCanvas:null,maskCtx:null,backupCanvas:null,history:[],painting:false,brushSize:40,tool:'paint',quality:1080,lastPointer:null,resultBlob:null,originalSourceW:0,originalSourceH:0,cvReady:false,aiReady:false,aiLoading:false,aiSession:null,isIOS:/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)};
+/* ============================================================
+   ⚠️ MAGIC HOUR API KEY — YAHAN PASTE KAR
+   Signup: https://magichour.ai/developer (400 free credits + 100/day)
+   ============================================================ */
+const MAGIC_HOUR_API_KEY = 'mhk_live_mW1VwroJB4ut56aVemPuJwwIAU8ciswSqSEAIImxxYww0OIs5cc1fhIx0Vzy5PZ8NvkRz1RneErUhEyf';
+
+const state={mode:'video',originalImage:null,originalVideo:null,originalVideoFile:null,workCanvas:null,workCtx:null,maskCanvas:null,maskCtx:null,backupCanvas:null,history:[],painting:false,brushSize:40,tool:'paint',quality:480,lastPointer:null,resultBlob:null,originalSourceW:0,originalSourceH:0,cvReady:false,aiReady:false,aiSession:null,isIOS:/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)};
 
 /* ============================================================
    ENGINE BADGE
    ============================================================ */
-function setEngineBadge(type,text){const b=$('#engineBadge');b.className='nav-tag '+type;b.textContent=text||'Loading…';}
+function setEngineBadge(type,text){const b=$('#engineBadge');b.className='nav-tag '+type;b.textContent=text||'Ready';}
 
 /* ============================================================
-   LOAD SCRIPTS
+   OPENCV LOADER
    ============================================================ */
 function loadScript(src){return new Promise((resolve,reject)=>{if(document.querySelector('script[src="'+src+'"]'))return resolve();const s=document.createElement('script');s.src=src;s.async=true;s.onload=()=>resolve();s.onerror=()=>reject(new Error('Failed to load '+src));document.head.appendChild(s);});}
 
-/* ============================================================
-   STEP 1: LOAD OPENCV (FAST, ALWAYS WORKS)
-   ============================================================ */
 async function loadOpenCV(){
   try{
     await new Promise((resolve,reject)=>{
@@ -258,32 +247,17 @@ async function loadOpenCV(){
 }
 
 /* ============================================================
-   STEP 2: LOAD AI IN BACKGROUND (NON-BLOCKING)
+   LaMa AI LOADER (Background, PC only)
    ============================================================ */
 const AI_MODEL_URL='https://huggingface.co/Carve/LaMa-ONNX/resolve/main/lama_fp32.onnx';
 const ORT_CDN='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/ort.min.js';
 const ORT_WASM_BASE='https://cdn.jsdelivr.net/npm/onnxruntime-web@1.17.0/dist/';
 
 async function loadAI(){
-  if(state.aiLoading||state.aiReady)return;
-  state.aiLoading=true;
-
-  // iOS: skip heavy AI entirely (memory limit)
-  if(state.isIOS){
-    console.log('iOS detected — skipping browser AI, using OpenCV');
-    setEngineBadge('basic','Basic');
-    state.aiLoading=false;
-    return;
-  }
-
+  if(state.aiReady||state.isIOS)return;
   try{
-    console.log('Loading ONNX Runtime…');
-    setEngineBadge('loading','AI 5%');
     await loadScript(ORT_CDN);
     if(window.ort){window.ort.env.wasm.wasmPaths=ORT_WASM_BASE;window.ort.env.wasm.numThreads=1;}
-    setEngineBadge('loading','AI 10%');
-
-    console.log('Downloading model…');
     const response=await fetch(AI_MODEL_URL);
     if(!response.ok)throw new Error('HTTP '+response.status);
     const total=+(response.headers.get('Content-Length')||0);
@@ -293,76 +267,78 @@ async function loadAI(){
       const{done,value}=await reader.read();
       if(done)break;
       chunks.push(value);received+=value.length;
-      if(total){
-        const pct=Math.round((received/total)*90)+10;
-        setEngineBadge('loading','AI '+pct+'%');
-      }
+      if(total){const pct=Math.round((received/total)*90)+10;setEngineBadge('loading','AI '+pct+'%');}
     }
     const all=new Uint8Array(received);let offset=0;
     for(const c of chunks){all.set(c,offset);offset+=c.length;}
-
     setEngineBadge('loading','AI 95%');
-    console.log('Creating session…');
     state.aiSession=await ort.InferenceSession.create(all.buffer,{executionProviders:['wasm'],graphOptimizationLevel:'all'});
     state.aiReady=true;
     setEngineBadge('ai','AI ✓');
-    toast('AI engine ready ✓','success',2500);
-    console.log('AI ready');
+    toast('LaMa AI ready ✓ (PC photo mode)','success',2500);
   }catch(e){
-    console.warn('AI failed:',e.message);
+    console.warn('LaMa AI failed:',e.message);
     setEngineBadge('basic','Basic');
-    toast('Using basic engine (AI unavailable)','info',3000);
   }
-  state.aiLoading=false;
 }
 
-/* ============================================================
-   INIT — OpenCV first, then AI in background
-   ============================================================ */
 (async function init(){
   setEngineBadge('loading','Loading…');
-  const ok=await loadOpenCV();
-  if(ok){
-    setEngineBadge('basic','Basic');
-    setTimeout(loadAI,1500); // start AI download after page settles
-  }else{
-    setEngineBadge('basic','Basic');
-  }
+  await loadOpenCV();
+  setEngineBadge('basic','Basic');
+  if(!state.isIOS)setTimeout(loadAI,2000);
+  else setEngineBadge('basic','Basic');
 })();
 
 /* ============================================================
    TABS
    ============================================================ */
-$$('.tab').forEach((tab)=>{tab.addEventListener('click',()=>{if(tab.classList.contains('active'))return;$$('.tab').forEach((t)=>t.classList.remove('active'));tab.classList.add('active');state.mode=tab.dataset.mode;if(state.mode==='photo'){$('#dropTitle').textContent='Drop your photo here';$('#dropSub').textContent='or click to browse — JPG, PNG, WebP, HEIC';$('#fileInput').setAttribute('accept','image/*');$('#qualityRow').classList.remove('show');}else{$('#dropTitle').textContent='Drop your video here';$('#dropSub').textContent='or click to browse — MP4, WebM, MOV (short clips)';$('#fileInput').setAttribute('accept','video/*');$('#qualityRow').classList.add('show');}});});
+$$('.tab').forEach((tab)=>{tab.addEventListener('click',()=>{if(tab.classList.contains('active'))return;$$('.tab').forEach((t)=>t.classList.remove('active'));tab.classList.add('active');state.mode=tab.dataset.mode;if(state.mode==='video'){$('#dropTitle').textContent='Drop your video here';$('#dropSub').textContent='or click to browse — MP4, WebM, MOV (max 45 sec)';$('#fileInput').setAttribute('accept','video/*');$('#qualityRow').classList.add('show');$('#promptBox').style.display='block';$('#brushToolsRow').style.display='none';}else{$('#dropTitle').textContent='Drop your photo here';$('#dropSub').textContent='or click to browse — JPG, PNG, WebP';$('#fileInput').setAttribute('accept','image/*');$('#qualityRow').classList.remove('show');$('#promptBox').style.display='none';$('#brushToolsRow').style.display='flex';}});});
 
 /* ============================================================
-   DROP ZONE + FILE INPUT
+   DROP ZONE
    ============================================================ */
 const dropZone=$('#dropZone');const fileInput=$('#fileInput');
-
 ['dragenter','dragover'].forEach((ev)=>{dropZone.addEventListener(ev,(e)=>{e.preventDefault();e.stopPropagation();dropZone.classList.add('drag');});});
 ['dragleave','drop'].forEach((ev)=>{dropZone.addEventListener(ev,(e)=>{e.preventDefault();e.stopPropagation();dropZone.classList.remove('drag');});});
 dropZone.addEventListener('drop',(e)=>{const f=e.dataTransfer.files[0];if(f)handleFile(f);});
-dropZone.addEventListener('click',(e)=>{if(e.target.closest('label[for="fileInput"]'))return;try{fileInput.click();}catch(err){console.warn(err);}});
+dropZone.addEventListener('click',(e)=>{if(e.target.closest('label[for="fileInput"]'))return;try{fileInput.click();}catch(err){}});
 fileInput.addEventListener('change',(e)=>{const f=e.target.files[0];if(f)handleFile(f);fileInput.value='';});
 
 function handleFile(file){
-  if(!state.cvReady&&!state.aiReady){toast('Engine loading, please wait 2 seconds…','warning');return;}
   const isImage=file.type.startsWith('image/');
   const isVideo=file.type.startsWith('video/');
   if(state.mode==='photo'&&!isImage){toast('Please drop an image file','error');return;}
   if(state.mode==='video'&&!isVideo){toast('Please drop a video file','error');return;}
-  if(isImage)loadImage(file);else loadVideo(file);
+  if(isVideo)loadVideo(file);else loadImage(file);
 }
 
 function loadImage(file){const url=URL.createObjectURL(file);const img=new Image();img.onload=()=>{state.originalImage=img;setupEditor(img.naturalWidth,img.naturalHeight,img);URL.revokeObjectURL(url);$('#editorFileInfo').textContent='Photo · '+img.naturalWidth+'×'+img.naturalHeight;toast('Photo loaded','success');};img.onerror=()=>{toast('Failed to load image','error');URL.revokeObjectURL(url);};img.src=url;}
 
-function loadVideo(file){const url=URL.createObjectURL(file);const vid=document.createElement('video');vid.muted=true;vid.playsInline=true;vid.preload='auto';vid.crossOrigin='anonymous';vid.onloadedmetadata=async()=>{state.originalVideo=vid;await seekTo(vid,Math.min(0.1,vid.duration/2));const temp=document.createElement('canvas');temp.width=vid.videoWidth;temp.height=vid.videoHeight;temp.getContext('2d').drawImage(vid,0,0);setupEditor(vid.videoWidth,vid.videoHeight,temp);$('#editorFileInfo').textContent='Video · '+vid.videoWidth+'×'+vid.videoHeight;toast('Video loaded','success');};vid.onerror=()=>{toast('Failed to load video','error');URL.revokeObjectURL(url);};vid.src=url;}
+function loadVideo(file){
+  state.originalVideoFile=file;
+  const url=URL.createObjectURL(file);
+  const vid=document.createElement('video');
+  vid.muted=true;vid.playsInline=true;vid.preload='auto';vid.crossOrigin='anonymous';
+  vid.onloadedmetadata=async()=>{
+    state.originalVideo=vid;
+    await seekTo(vid,Math.min(0.1,vid.duration/2));
+    const temp=document.createElement('canvas');
+    temp.width=vid.videoWidth;temp.height=vid.videoHeight;
+    temp.getContext('2d').drawImage(vid,0,0);
+    setupEditor(vid.videoWidth,vid.videoHeight,temp);
+    $('#editorFileInfo').textContent='Video · '+vid.videoWidth+'×'+vid.videoHeight+' · '+vid.duration.toFixed(1)+'s';
+    $('#promptBox').style.display='block';
+    toast('Video loaded · describe where the logo is','success',4000);
+  };
+  vid.onerror=()=>{toast('Failed to load video','error');URL.revokeObjectURL(url);};
+  vid.src=url;
+}
 
 function seekTo(video,time){return new Promise((resolve)=>{const onSeeked=()=>{video.removeEventListener('seeked',onSeeked);resolve();};video.addEventListener('seeked',onSeeked);video.currentTime=time;});}
 
 /* ============================================================
-   EDITOR SETUP
+   EDITOR
    ============================================================ */
 function setupEditor(w,h,source){
   $('#editor').classList.add('active');document.body.style.overflow='hidden';
@@ -417,17 +393,150 @@ function showProgress(title,msg){$('#progressTitle').textContent=title;$('#progr
 function setProgress(pct){const c=Math.max(0,Math.min(100,pct));$('#progressFill').style.width=c+'%';$('#progressPct').textContent=Math.round(c)+'%';}
 function hideProgress(){$('#progressFull').classList.remove('show');}
 
+/* ============================================================
+   PROCESS — VIDEO via Magic Hour, PHOTO via LaMa/OpenCV
+   ============================================================ */
 $('#btnProcess').addEventListener('click',async()=>{
-  if(!state.cvReady&&!state.aiReady){toast('Engine loading…','warning');return;}
-  const md=state.maskCtx.getImageData(0,0,state.maskCanvas.width,state.maskCanvas.height).data;let has=false;
-  for(let i=3;i<md.length;i+=4){if(md[i]>10){has=true;break;}}
-  if(!has){toast('Brush over the logo first ✏️','warning');return;}
-  if(state.mode==='photo')await processPhoto();else await processVideo();
+  if(state.mode==='video'){await processVideoMagicHour();}
+  else{await processPhoto();}
 });
 
 /* ============================================================
-   LaMa INFERENCE
+   MAGIC HOUR VIDEO PROCESSING
    ============================================================ */
+async function processVideoMagicHour(){
+  if(!MAGIC_HOUR_API_KEY||MAGIC_HOUR_API_KEY.includes('PASTE_')){
+    toast('Please add your Magic Hour API key in the code.','error',6000);return;
+  }
+  const prompt=$('#videoPrompt').value.trim();
+  if(!prompt){toast('Please describe where the logo is.','warning');return;}
+
+  showProgress('Uploading video…','Sending to Magic Hour securely.');
+  try{
+    // Step 1: Get upload URL
+    setProgress(5);
+    const ext=(state.originalVideoFile.name.split('.').pop()||'mp4').toLowerCase();
+    const uploadRes=await fetch('https://api.magichour.ai/v1/files/upload-urls',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+MAGIC_HOUR_API_KEY,'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({items:[{type:'video',extension:ext}]})
+    });
+    if(!uploadRes.ok){const t=await uploadRes.text();throw new Error('Upload URL failed: '+uploadRes.status+' '+t);}
+    const uploadData=await uploadRes.json();
+    const item=uploadData.items?.[0];
+    if(!item)throw new Error('No upload URL returned');
+    const uploadUrl=item.upload_url;
+    const filePath=item.file_path;
+    setProgress(15);
+
+    // Step 2: Upload video
+    $('#progressMsg').textContent='Uploading video file…';
+    const putRes=await fetch(uploadUrl,{method:'PUT',body:state.originalVideoFile,headers:{'Content-Type':state.originalVideoFile.type||'video/mp4'}});
+    if(!putRes.ok)throw new Error('Video upload failed: '+putRes.status);
+    setProgress(30);
+
+    // Step 3: Create AI Video Editor job
+    $('#progressMsg').textContent='Creating AI job…';
+    const dur=Math.min(state.originalVideo.duration||5,45);
+    const startSec=0;
+    const endSec=Math.min(dur,45);
+    const model='ltx-2.3';
+    const createRes=await fetch('https://api.magichour.ai/v1/ai-video-editor',{
+      method:'POST',
+      headers:{'Authorization':'Bearer '+MAGIC_HOUR_API_KEY,'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        name:'LogoGone edit',
+        start_seconds:startSec,
+        end_seconds:endSec,
+        style:{prompt:prompt},
+        assets:{video_file_path:filePath},
+        model:model,
+        resolution:state.quality===1080?'1080p':state.quality===720?'720p':'480p'
+      })
+    });
+    if(!createRes.ok){const t=await createRes.text();throw new Error('Job create failed: '+createRes.status+' '+t);}
+    const job=await createRes.json();
+    const projectId=job.id;
+    if(!projectId)throw new Error('No project ID');
+    toast('Job started · rendering…','info',4000);
+    setProgress(40);
+
+    // Step 4: Poll for completion
+    let attempts=0;const maxAttempts=120;let finalUrl=null;
+    while(attempts<maxAttempts){
+      await new Promise(r=>setTimeout(r,5000));
+      attempts++;
+      const statusRes=await fetch('https://api.magichour.ai/v1/video-projects/'+projectId,{
+        headers:{'Authorization':'Bearer '+MAGIC_HOUR_API_KEY,'Accept':'application/json'}
+      });
+      if(!statusRes.ok)continue;
+      const status=await statusRes.json();
+      const pct=40+Math.min(55,(attempts/maxAttempts)*55);
+      setProgress(pct);
+      $('#progressMsg').textContent='Status: '+(status.status||'processing')+' · '+Math.round(pct)+'%';
+      if(status.status==='complete'){
+        finalUrl=status.downloads?.[0]?.url||status.downloads?.[0];
+        break;
+      }
+      if(status.status==='error'||status.status==='canceled'){
+        throw new Error('Job '+status.status+': '+(status.error?.message||'unknown'));
+      }
+    }
+    if(!finalUrl)throw new Error('Timed out waiting for result');
+
+    // Step 5: Download result
+    setProgress(95);
+    $('#progressMsg').textContent='Downloading result…';
+    const videoRes=await fetch(finalUrl);
+    const blob=await videoRes.blob();
+    state.resultBlob=blob;
+    setProgress(100);
+    hideProgress();
+    const extOut=finalUrl.includes('.webm')?'webm':'mp4';
+    showDownload(URL.createObjectURL(blob),'logoGone.'+extOut,extOut.toUpperCase());
+    toast('Video processed ✓ Download below','success',5000);
+  }catch(e){
+    console.error(e);
+    hideProgress();
+    toast('Magic Hour failed: '+(e.message||e),'error',7000);
+  }
+}
+
+/* ============================================================
+   PHOTO PROCESS (LaMa on PC, OpenCV fallback)
+   ============================================================ */
+async function processPhoto(){
+  const md=state.maskCtx.getImageData(0,0,state.maskCanvas.width,state.maskCanvas.height).data;let has=false;
+  for(let i=3;i<md.length;i+=4){if(md[i]>10){has=true;break;}}
+  if(!has){toast('Brush over the logo first ✏️','warning');return;}
+
+  showProgress('Removing logo…','Processing on your device.');
+  try{
+    await new Promise(r=>setTimeout(r,100));
+    const W=state.workCanvas.width,H=state.workCanvas.height;
+    let resultImageData;
+    if(state.aiReady){
+      setProgress(20);
+      const imgData=state.workCtx.getImageData(0,0,W,H);
+      const mskData=state.maskCtx.getImageData(0,0,W,H);
+      resultImageData=await runLaMa(imgData,mskData,W,H);
+      setProgress(85);
+    }else{
+      const r=inpaintOpenCV(state.workCanvas,state.maskCanvas,5);
+      resultImageData=r.getContext('2d').getImageData(0,0,W,H);
+      setProgress(70);
+    }
+    const finalCanvas=document.createElement('canvas');finalCanvas.width=W;finalCanvas.height=H;const fctx=finalCanvas.getContext('2d');
+    const origData=state.workCtx.getImageData(0,0,W,H);fctx.putImageData(origData,0,0);
+    const maskPx=state.maskCtx.getImageData(0,0,W,H).data;const resPx=resultImageData.data;const finalImgData=fctx.getImageData(0,0,W,H);
+    for(let i=0;i<maskPx.length;i+=4){const m=maskPx[i+3]/255;if(m>0.01){finalImgData.data[i+0]=resPx[i+0]*m+finalImgData.data[i+0]*(1-m);finalImgData.data[i+1]=resPx[i+1]*m+finalImgData.data[i+1]*(1-m);finalImgData.data[i+2]=resPx[i+2]*m+finalImgData.data[i+2]*(1-m);}}
+    state.workCtx.putImageData(finalImgData,0,0);state.backupCanvas=null;setProgress(90);
+    const outCanvas=document.createElement('canvas');outCanvas.width=state.originalSourceW;outCanvas.height=state.originalSourceH;const octx=outCanvas.getContext('2d');octx.imageSmoothingEnabled=true;octx.imageSmoothingQuality='high';octx.drawImage(finalCanvas,0,0,outCanvas.width,outCanvas.height);
+    outCanvas.toBlob((blob)=>{state.resultBlob=blob;const url=URL.createObjectURL(blob);showDownload(url,'logoGone.png','PNG');setProgress(100);hideProgress();toast('Logo removed ✓ Download below','success');},'image/png');
+  }catch(e){console.error(e);hideProgress();toast('Failed: '+(e.message||e),'error');}
+}
+
+/* LaMa inference */
 async function runLaMa(imageData,maskData,w,h){
   const session=state.aiSession;if(!session)throw new Error('No AI session');
   const SIZE=512;
@@ -460,88 +569,20 @@ async function runLaMa(imageData,maskData,w,h){
   return fctx.getImageData(0,0,w,h);
 }
 
-/* ============================================================
-   PHOTO PROCESS
-   ============================================================ */
-async function processPhoto(){
-  showProgress('Removing logo…','AI is analyzing and filling the marked area.');
-  try{
-    await new Promise((r)=>setTimeout(r,100));
-    const W=state.workCanvas.width,H=state.workCanvas.height;
-    let resultImageData;
-    if(state.aiReady){
-      setProgress(20);
-      const imgData=state.workCtx.getImageData(0,0,W,H);
-      const mskData=state.maskCtx.getImageData(0,0,W,H);
-      resultImageData=await runLaMa(imgData,mskData,W,H);
-      setProgress(85);
-    }else{
-      const r=inpaintOpenCV(state.workCanvas,state.maskCanvas,5);
-      resultImageData=r.getContext('2d').getImageData(0,0,W,H);
-      setProgress(70);
-    }
-    const finalCanvas=document.createElement('canvas');finalCanvas.width=W;finalCanvas.height=H;const fctx=finalCanvas.getContext('2d');
-    const origData=state.workCtx.getImageData(0,0,W,H);fctx.putImageData(origData,0,0);
-    const maskPx=state.maskCtx.getImageData(0,0,W,H).data;const resPx=resultImageData.data;const finalImgData=fctx.getImageData(0,0,W,H);
-    for(let i=0;i<maskPx.length;i+=4){const m=maskPx[i+3]/255;if(m>0.01){finalImgData.data[i+0]=resPx[i+0]*m+finalImgData.data[i+0]*(1-m);finalImgData.data[i+1]=resPx[i+1]*m+finalImgData.data[i+1]*(1-m);finalImgData.data[i+2]=resPx[i+2]*m+finalImgData.data[i+2]*(1-m);}}
-    state.workCtx.putImageData(finalImgData,0,0);state.backupCanvas=null;setProgress(90);
-    const outCanvas=document.createElement('canvas');outCanvas.width=state.originalSourceW;outCanvas.height=state.originalSourceH;const octx=outCanvas.getContext('2d');octx.imageSmoothingEnabled=true;octx.imageSmoothingQuality='high';octx.drawImage(finalCanvas,0,0,outCanvas.width,outCanvas.height);
-    outCanvas.toBlob((blob)=>{state.resultBlob=blob;const url=URL.createObjectURL(blob);showDownload(url,'logoGone.png','PNG');setProgress(100);hideProgress();toast('Logo removed ✓ Download below','success');},'image/png');
-  }catch(e){console.error(e);hideProgress();toast('Failed: '+(e.message||e),'error');}
-}
-
 function inpaintOpenCV(sourceCanvas,maskCanvas,radius){const src=cv.imread(sourceCanvas);const mask=cv.imread(maskCanvas);const srcRgb=new cv.Mat();cv.cvtColor(src,srcRgb,cv.COLOR_RGBA2RGB);const gray=new cv.Mat();cv.cvtColor(mask,gray,cv.COLOR_RGBA2GRAY);cv.threshold(gray,gray,10,255,cv.THRESH_BINARY);const dst=new cv.Mat();cv.inpaint(srcRgb,gray,dst,radius,cv.INPAINT_TELEA);const out=document.createElement('canvas');out.width=sourceCanvas.width;out.height=sourceCanvas.height;cv.imshow(out,dst);src.delete();srcRgb.delete();mask.delete();gray.delete();dst.delete();return out;}
 
 /* ============================================================
-   VIDEO PROCESS
+   DOWNLOAD
    ============================================================ */
-async function processVideo(){
-  const vid=state.originalVideo;if(!vid)return;
-  if(!state.aiReady){toast('Video needs AI. Wait for AI to load or use photo mode.','warning',5000);return;}
-  showProgress('Processing video…','Frame-by-frame AI inpainting. May take minutes.');
-  try{
-    await new Promise((r)=>setTimeout(r,100));
-    const srcW=state.originalSourceW,srcH=state.originalSourceH;let targetW=srcW,targetH=srcH;
-    if(state.quality!==0){const scale=state.quality/srcH;if(scale<1){targetW=Math.round(srcW*scale);targetH=Math.round(srcH*scale);targetW+=targetW%2;targetH+=targetH%2;}}
-    const outCanvas=document.createElement('canvas');outCanvas.width=targetW;outCanvas.height=targetH;const outCtx=outCanvas.getContext('2d',{willReadFrequently:true});
-    const frameCanvas=document.createElement('canvas');frameCanvas.width=state.workCanvas.width;frameCanvas.height=state.workCanvas.height;const frameCtx=frameCanvas.getContext('2d',{willReadFrequently:true});
-    const maskData=state.maskCtx.getImageData(0,0,frameCanvas.width,frameCanvas.height);
-    const stream=outCanvas.captureStream(30);
-    let mimeType='video/webm;codecs=vp9';if(!MediaRecorder.isTypeSupported(mimeType))mimeType='video/webm;codecs=vp8';if(!MediaRecorder.isTypeSupported(mimeType))mimeType='video/webm';
-    const recorder=new MediaRecorder(stream,{mimeType,videoBitsPerSecond:state.quality===2160?45000000:state.quality===1080?12000000:6000000});
-    const chunks=[];recorder.ondataavailable=(e)=>{if(e.data.size)chunks.push(e.data);};
-    const recordingDone=new Promise((resolve)=>{recorder.onstop=()=>resolve(new Blob(chunks,{type:mimeType}));});
-    const duration=vid.duration,fps=30,totalFrames=Math.max(1,Math.ceil(duration*fps));let frameIdx=0;
-    vid.pause();vid.currentTime=0;await new Promise((r)=>setTimeout(r,100));recorder.start();
-    for(let t=0;t<duration;t+=1/fps){
-      await seekTo(vid,t);frameCtx.clearRect(0,0,frameCanvas.width,frameCanvas.height);frameCtx.drawImage(vid,0,0,frameCanvas.width,frameCanvas.height);
-      const imgData=frameCtx.getImageData(0,0,frameCanvas.width,frameCanvas.height);
-      let resultData;
-      try{resultData=await runLaMa(imgData,maskData,frameCanvas.width,frameCanvas.height);}catch(e){console.warn(e);const r=inpaintOpenCV(frameCanvas,state.maskCanvas,5);resultData=r.getContext('2d').getImageData(0,0,frameCanvas.width,frameCanvas.height);}
-      const composited=document.createElement('canvas');composited.width=frameCanvas.width;composited.height=frameCanvas.height;const cctx=composited.getContext('2d');cctx.drawImage(frameCanvas,0,0);
-      const cImgData=cctx.getImageData(0,0,frameCanvas.width,frameCanvas.height);const maskPx=maskData.data;const resPx=resultData.data;
-      for(let i=0;i<maskPx.length;i+=4){const m=maskPx[i+3]/255;if(m>0.01){cImgData.data[i+0]=resPx[i+0]*m+cImgData.data[i+0]*(1-m);cImgData.data[i+1]=resPx[i+1]*m+cImgData.data[i+1]*(1-m);cImgData.data[i+2]=resPx[i+2]*m+cImgData.data[i+2]*(1-m);}}
-      cctx.putImageData(cImgData,0,0);
-      outCtx.clearRect(0,0,outCanvas.width,outCanvas.height);outCtx.drawImage(composited,0,0,outCanvas.width,outCanvas.height);
-      frameIdx++;
-      if(frameIdx%2===0||t+(1/fps)>=duration){const pct=Math.min(100,(frameIdx/totalFrames)*100);setProgress(pct);$('#progressMsg').textContent='Frame '+frameIdx+' / '+totalFrames;await new Promise((r)=>setTimeout(r,0));}
-    }
-    await new Promise((r)=>setTimeout(r,400));recorder.stop();const blob=await recordingDone;
-    state.resultBlob=blob;const ext=mimeType.includes('webm')?'webm':'mp4';const url=URL.createObjectURL(blob);
-    showDownload(url,'logoGone.'+ext,ext.toUpperCase());setProgress(100);hideProgress();toast('Video processed ✓','success',5000);
-  }catch(e){console.error(e);hideProgress();toast('Video failed: '+(e.message||e),'error',6000);}
-}
-
 function showDownload(url,filename,label){const bar=$('#downloadBar');bar.innerHTML='';const a=document.createElement('a');a.href=url;a.download=filename;a.className='btn btn-primary';a.style.flex='1';a.style.maxWidth='380px';a.style.justifyContent='center';a.style.textDecoration='none';a.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Download '+label;bar.appendChild(a);bar.classList.add('show');}
 
 $('#year').textContent=new Date().getFullYear();
 document.addEventListener('keydown',(e)=>{if(e.key==='z'&&(e.ctrlKey||e.metaKey)){e.preventDefault();$('#btnUndo').click();}if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();$('#btnProcess').click();}if(e.key==='Escape'){$('#editorClose').click();}});
 
-/* Badge click shows details */
 $('#engineBadge').addEventListener('click',()=>{
-  if(state.aiReady)toast('AI engine active — LaMa inpainting ✓','success',3000);
-  else if(state.aiLoading)toast('AI downloading… please wait','info',2500);
-  else toast('Basic engine active (OpenCV). '+(state.isIOS?'iOS detected — AI skipped for stability.':'AI unavailable.'),'info',4000);
+  if(state.mode==='video')toast('Video: Magic Hour API · 100 credits/day free','info',4000);
+  else if(state.aiReady)toast('Photo: LaMa AI active (PC) ✓','success',3000);
+  else toast('Photo: Basic OpenCV engine '+(state.isIOS?'(iOS — LaMa not available)':''),'info',4000);
 });
 </script>
 </body>
